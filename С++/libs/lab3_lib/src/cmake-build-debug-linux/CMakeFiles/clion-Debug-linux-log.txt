@@ -1,0 +1,4 @@
+C:\Windows\system32\wsl.exe --distribution Ubuntu --exec /bin/bash -c "export PATH=\":$PATH\" && export CMAKE_COLOR_DIAGNOSTICS=ON && export CLION_IDE=TRUE && export JETBRAINS_IDE=TRUE && cd '/mnt/c/Users/Sasha/Desktop/Study/2 semestre/IT/libs/lab3_lib/src/cmake-build-debug-linux' && /usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=ninja -G Ninja -S '/mnt/c/Users/Sasha/Desktop/Study/2 semestre/IT/libs/lab3_lib/src' -B '/mnt/c/Users/Sasha/Desktop/Study/2 semestre/IT/libs/lab3_lib/src/cmake-build-debug-linux'"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /mnt/c/Users/Sasha/Desktop/Study/2 semestre/IT/libs/lab3_lib/src/cmake-build-debug-linux

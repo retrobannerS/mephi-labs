@@ -1,0 +1,6 @@
+C:\Windows\system32\wsl.exe --distribution Ubuntu --exec /bin/bash -c "export CMAKE_COLOR_DIAGNOSTICS=ON && export CLION_IDE=TRUE && export JETBRAINS_IDE=TRUE && cd '/mnt/c/Users/Sasha/Desktop/Study/1 semestre/IT/lab4/cmake-build-wsl' && /usr/bin/cmake -DCMAKE_BUILD_TYPE=Release -G 'CodeBlocks - Unix Makefiles' -S '/mnt/c/Users/Sasha/Desktop/Study/1 semestre/IT/lab4' -B '/mnt/c/Users/Sasha/Desktop/Study/1 semestre/IT/lab4/cmake-build-wsl'"
+CMake Error at CMakeLists.txt:1 (cmake_minimum_required):
+  CMake 3.23 or higher is required.  You are running version 3.16.3
+
+
+-- Configuring incomplete, errors occurred!

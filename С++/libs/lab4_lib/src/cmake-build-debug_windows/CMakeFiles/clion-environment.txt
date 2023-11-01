@@ -1,0 +1,4 @@
+ToolSet: 17.0 (local)@D:\Programms\VS_Build_Tools
+Options: msvc.arch=amd64
+
+Options:-DCMAKE_MAKE_PROGRAM=D:/Programms/CLion 2023.1.1/bin/ninja/win/x64/ninja.exe

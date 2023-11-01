@@ -1,0 +1,3 @@
+/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/cmake-build-macos/CMakeFiles/lab3_library.dir
+/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/cmake-build-macos/CMakeFiles/edit_cache.dir
+/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/cmake-build-macos/CMakeFiles/rebuild_cache.dir

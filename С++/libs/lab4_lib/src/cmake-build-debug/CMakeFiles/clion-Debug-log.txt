@@ -1,0 +1,13 @@
+C:\Windows\system32\wsl.exe --distribution Ubuntu --exec /bin/bash -c "export PATH=\":$PATH\" && export CMAKE_COLOR_DIAGNOSTICS=ON && export CLION_IDE=TRUE && export JETBRAINS_IDE=TRUE && cd '/mnt/c/Users/Sasha/Desktop/Study/2 semestre/IT/libs/lab4_lib/src/cmake-build-debug' && /usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=ninja -G Ninja -S '/mnt/c/Users/Sasha/Desktop/Study/2 semestre/IT/libs/lab4_lib/src' -B '/mnt/c/Users/Sasha/Desktop/Study/2 semestre/IT/libs/lab4_lib/src/cmake-build-debug'"
+-- Configuring done
+CMake Error at CMakeLists.txt:6 (add_library):
+  Cannot find source file:
+
+    trees/N_
+
+
+CMake Error at CMakeLists.txt:6 (add_library):
+  No SOURCES given to target: lab4_labrary
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.

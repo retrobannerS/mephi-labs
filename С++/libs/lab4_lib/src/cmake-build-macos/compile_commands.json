@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab4_lib/src/cmake-build-macos",
+  "command": "/usr/bin/clang++   -g -std=gnu++2b -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk -o CMakeFiles/lab4.dir/trees/N_ary_tree.cpp.o -c /Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab4_lib/src/trees/N_ary_tree.cpp",
+  "file": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab4_lib/src/trees/N_ary_tree.cpp",
+  "output": "CMakeFiles/lab4.dir/trees/N_ary_tree.cpp.o"
+}
+]

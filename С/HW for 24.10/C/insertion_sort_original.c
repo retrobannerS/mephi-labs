@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <iso646.h>
+
+void arrayRemoveDups(int *A, unsigned short int*len);
+int *arrayInput (unsigned short int *len);
+void arrayOutput (int *A, unsigned short int len);
+void sort(int *A, unsigned short int i);
+
+int main()
+{
+    unsigned short int len;
+    int *A = arrayInput(&len);
+    sort(A, len);
+    arrayRemoveDups(A, &len);
+    arrayOutput(A, len);
+    free(A);                                            //Очищаем память
+    return 0;
+}
+
+int *arrayInput (unsigned short int *len)
+{
+    printf("Write length of array:");
+    scanf("%u", len);
+    int *A = malloc(*len * sizeof(int));                    // указатель на начало блока, выделенной памяти
+    if (NULL == A)                                               // если произошла ошибка выделения памяти...
+    {
+        printf("\nFailed to allocate memory\n");
+        exit(1); //выходим из программы
+    }
+    for (int i = 0; i < *len; i++)
+    {
+        //printf("Write integer at index %d:", i);
+        //scanf("%d", &A[i]);
+        A[i] = rand();
+    }
+    return A;
+}
+
+void sort(int *A, unsigned short int len)
+{
+    for (int i = 1; i <= len; i++)
+    {
+        int k = i;
+        while (A[k - 1] > A[k] and k != 0)
+        {
+            int tmp = A[k];
+            A[k] = A[k - 1];
+            A[k - 1] = tmp;
+            --k;
+        }
+    }
+}
+
+void arrayRemoveDups(int *A, unsigned short int *len)
+{
+    clock_t start = clock();
+    for (int i = 0; i <= *len - 2; i++)
+    {
+        for (int j = i + 1; j <= *len - 1; j++)
+        {
+            if (A[i] == A[j])
+            {
+                for (int k = j; k <= *len - 2; k++)                 // обнаружив, дубликат переносим все элементы массива влево на 1 до самого дубликата.
+                {
+                    A[k] = A[k+1];
+                }
+                --(*len), --j;                                      // уменьшаем длинy и j.
+            }
+        }
+    }
+    clock_t end = clock();
+    printf("Program worked: %.3Lfs\n", (long double)(end - start) / CLOCKS_PER_SEC);
+}
+
+void arrayOutput(int *A, unsigned short int len)
+{
+    printf("\nArray without duplicates has length %u:\n", len);
+    printf("\n");
+    for (int i = 0; i < len; i++)
+    {
+        printf("Element at index %3d: %5d\n", i, A[i]);
+    }
+}

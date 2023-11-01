@@ -1,0 +1,6 @@
+# ninja log v5
+1	70	7068156231609121	build.ninja	7ebd4ded3ee5c19d
+621	681	7068156010190530	lab2.lib	f50aafc3d0ee3a4c
+0	609	7068156009509894	CMakeFiles/lab2.dir/TestFailedException.cpp.obj	a97052bf7fd83cd2
+0	38	0	lab2.lib	933a099b4013f2c5
+0	29	0	lab2.lib	933a099b4013f2c5

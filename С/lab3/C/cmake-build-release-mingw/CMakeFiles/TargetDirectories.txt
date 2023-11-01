@@ -1,0 +1,3 @@
+C:/Users/Sasha/Desktop/Study/1 semestre/IT/lab3/cmake-build-release-mingw/CMakeFiles/lab3.dir
+C:/Users/Sasha/Desktop/Study/1 semestre/IT/lab3/cmake-build-release-mingw/CMakeFiles/edit_cache.dir
+C:/Users/Sasha/Desktop/Study/1 semestre/IT/lab3/cmake-build-release-mingw/CMakeFiles/rebuild_cache.dir

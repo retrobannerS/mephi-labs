@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab2_lib/src/cmake-build-macos",
+  "command": "/usr/bin/clang++   -g -std=gnu++2b -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk -o CMakeFiles/lab2.dir/TestFailedException.cpp.o -c /Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab2_lib/src/TestFailedException.cpp",
+  "file": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab2_lib/src/TestFailedException.cpp",
+  "output": "CMakeFiles/lab2.dir/TestFailedException.cpp.o"
+}
+]

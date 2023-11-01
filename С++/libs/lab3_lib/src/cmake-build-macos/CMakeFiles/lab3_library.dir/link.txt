@@ -1,0 +1,2 @@
+/usr/bin/ar qc liblab3_library.a CMakeFiles/lab3_library.dir/Data_types/mycomplex.cpp.o CMakeFiles/lab3_library.dir/Data_types/person.cpp.o CMakeFiles/lab3_library.dir/Algos/hanoi/hanoi.cpp.o CMakeFiles/lab3_library.dir/Algos/PrimeNumbers/PrimeNumbers.cpp.o
+/usr/bin/ranlib liblab3_library.a

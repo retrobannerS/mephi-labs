@@ -1,0 +1,9 @@
+# ninja log v5
+15	450	1685621774358997100	build.ninja	22de6f48d2ef5889
+28	807	1685533488696210800	CMakeFiles/lab3_library.dir/Data_types/person.cpp.o	66c461fa0ca985e7
+51	1234	1685621702945586800	CMakeFiles/lab3_library.dir/Algos/hanoi/hanoi.cpp.o	c2d65cdd9f22c008
+26	875	1685533488763281900	CMakeFiles/lab3_library.dir/Data_types/mycomplex.cpp.o	2fc0f591c2c608c9
+1253	1370	1685621703089669300	liblab3_library.a	588f2bc74427969a
+65	1071	1685591072960933200	CMakeFiles/lab3_library.dir/Algos/PrimeNumbers/PrimeNumbers.cpp.o	bf6d9dec033593c9
+54	1106	1685626985796347700	CMakeFiles/lab3_library.dir/Algos/hanoi/hanoi.cpp.o	c2d65cdd9f22c008
+1116	1237	1685626985934709700	liblab3_library.a	588f2bc74427969a

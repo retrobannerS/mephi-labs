@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ChooseWindow</class>
+ <widget class="QMainWindow" name="ChooseWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>253</width>
+    <height>162</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>253</width>
+    <height>162</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>253</width>
+    <height>162</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>lab3</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+    background-color: rgb(255, 255, 245);
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>231</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="2" column="0">
+      <widget class="QRadioButton" name="Deque_button">
+       <property name="styleSheet">
+        <string notr="true">/* Оформление обычных радио-кнопок */
+QRadioButton {
+    color: black;
+    padding: 2px;
+}
+
+/* Оформление радио-кнопок при наведении мыши */
+QRadioButton:hover {
+    color: #808080;
+}
+
+/* Оформление радио-кнопок при выборе */
+QRadioButton:checked {
+    color: #ffaa00;
+}
+
+/* Оформление индикатора радио-кнопки */
+QRadioButton::indicator {
+    width: 13px;
+    height: 13px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Deque</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="Sequence_button">
+       <property name="styleSheet">
+        <string notr="true">/* Оформление обычных радио-кнопок */
+QRadioButton {
+    color: black;
+    padding: 2px;
+}
+
+/* Оформление радио-кнопок при наведении мыши */
+QRadioButton:hover {
+    color: #808080;
+}
+
+/* Оформление радио-кнопок при выборе */
+QRadioButton:checked {
+    color: #ffaa00;
+}
+
+/* Оформление индикатора радио-кнопки */
+QRadioButton::indicator {
+    width: 13px;
+    height: 13px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Sequence</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QRadioButton" name="Stack_button">
+       <property name="styleSheet">
+        <string notr="true">/* Оформление обычных радио-кнопок */
+QRadioButton {
+    color: black;
+    padding: 2px;
+}
+
+/* Оформление радио-кнопок при наведении мыши */
+QRadioButton:hover {
+    color: #808080;
+}
+
+/* Оформление радио-кнопок при выборе */
+QRadioButton:checked {
+    color: #ffaa00;
+}
+
+/* Оформление индикатора радио-кнопки */
+QRadioButton::indicator {
+    width: 13px;
+    height: 13px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Stack</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QRadioButton" name="PrimeNumbers_button">
+       <property name="styleSheet">
+        <string notr="true">/* Оформление обычных радио-кнопок */
+QRadioButton {
+    color: black;
+    padding: 2px;
+}
+
+/* Оформление радио-кнопок при наведении мыши */
+QRadioButton:hover {
+    color: #808080;
+}
+
+/* Оформление радио-кнопок при выборе */
+QRadioButton:checked {
+    color: #ffaa00;
+}
+
+/* Оформление индикатора радио-кнопки */
+QRadioButton::indicator {
+    width: 13px;
+    height: 13px;
+}</string>
+       </property>
+       <property name="text">
+        <string>PrimeNumbers</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="PriorityQueue_button">
+       <property name="styleSheet">
+        <string notr="true">/* Оформление обычных радио-кнопок */
+QRadioButton {
+    color: black;
+    padding: 2px;
+}
+
+/* Оформление радио-кнопок при наведении мыши */
+QRadioButton:hover {
+    color: #808080;
+}
+
+/* Оформление радио-кнопок при выборе */
+QRadioButton:checked {
+    color: #ffaa00;
+}
+
+/* Оформление индикатора радио-кнопки */
+QRadioButton::indicator {
+    width: 13px;
+    height: 13px;
+}</string>
+       </property>
+       <property name="text">
+        <string>PriorityQueue</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QRadioButton" name="Queue_button">
+       <property name="styleSheet">
+        <string notr="true">/* Оформление обычных радио-кнопок */
+QRadioButton {
+    color: black;
+    padding: 2px;
+}
+
+/* Оформление радио-кнопок при наведении мыши */
+QRadioButton:hover {
+    color: #808080;
+}
+
+/* Оформление радио-кнопок при выборе */
+QRadioButton:checked {
+    color: #ffaa00;
+}
+
+/* Оформление индикатора радио-кнопки */
+QRadioButton::indicator {
+    width: 13px;
+    height: 13px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Queue</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="4" column="0" colspan="2">
+      <widget class="QPushButton" name="Choose_button">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+  background-color: rgb(255, 151, 57);
+  color: white; 
+  border: 1px solid gray;
+}
+
+QPushButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FF7832, stop: 1 #FF9739);
+}
+
+/* Оформление кнопок при наведении мыши */
+QPushButton:hover {
+    background-color: #777;
+}
+
+</string>
+       </property>
+       <property name="text">
+        <string>Choose</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QRadioButton" name="Set_button">
+       <property name="styleSheet">
+        <string notr="true">/* Оформление обычных радио-кнопок */
+QRadioButton {
+    color: black;
+    padding: 2px;
+}
+
+/* Оформление радио-кнопок при наведении мыши */
+QRadioButton:hover {
+    color: #808080;
+}
+
+/* Оформление радио-кнопок при выборе */
+QRadioButton:checked {
+    color: #ffaa00;
+}
+
+/* Оформление индикатора радио-кнопки */
+QRadioButton::indicator {
+    width: 13px;
+    height: 13px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Set</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QRadioButton" name="Hanoi_button">
+       <property name="styleSheet">
+        <string notr="true">/* Оформление обычных радио-кнопок */
+QRadioButton {
+    color: black;
+    padding: 2px;
+}
+
+/* Оформление радио-кнопок при наведении мыши */
+QRadioButton:hover {
+    color: #808080;
+}
+
+/* Оформление радио-кнопок при выборе */
+QRadioButton:checked {
+    color: #ffaa00;
+}
+
+/* Оформление индикатора радио-кнопки */
+QRadioButton::indicator {
+    width: 13px;
+    height: 13px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Hanoi</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
+</ui>

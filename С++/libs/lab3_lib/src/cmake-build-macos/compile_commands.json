@@ -1,0 +1,26 @@
+[
+{
+  "directory": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/cmake-build-macos",
+  "command": "/usr/bin/clang++  -I/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/../../lab2_lib/includes -I/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src -g -std=c++2b -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk -o CMakeFiles/lab3_library.dir/Data_types/mycomplex.cpp.o -c /Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/Data_types/mycomplex.cpp",
+  "file": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/Data_types/mycomplex.cpp",
+  "output": "CMakeFiles/lab3_library.dir/Data_types/mycomplex.cpp.o"
+},
+{
+  "directory": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/cmake-build-macos",
+  "command": "/usr/bin/clang++  -I/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/../../lab2_lib/includes -I/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src -g -std=c++2b -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk -o CMakeFiles/lab3_library.dir/Data_types/person.cpp.o -c /Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/Data_types/person.cpp",
+  "file": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/Data_types/person.cpp",
+  "output": "CMakeFiles/lab3_library.dir/Data_types/person.cpp.o"
+},
+{
+  "directory": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/cmake-build-macos",
+  "command": "/usr/bin/clang++  -I/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/../../lab2_lib/includes -I/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src -g -std=c++2b -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk -o CMakeFiles/lab3_library.dir/Algos/hanoi/hanoi.cpp.o -c /Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/Algos/hanoi/hanoi.cpp",
+  "file": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/Algos/hanoi/hanoi.cpp",
+  "output": "CMakeFiles/lab3_library.dir/Algos/hanoi/hanoi.cpp.o"
+},
+{
+  "directory": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/cmake-build-macos",
+  "command": "/usr/bin/clang++  -I/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/../../lab2_lib/includes -I/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src -g -std=c++2b -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk -o CMakeFiles/lab3_library.dir/Algos/PrimeNumbers/PrimeNumbers.cpp.o -c /Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/Algos/PrimeNumbers/PrimeNumbers.cpp",
+  "file": "/Users/retrobanner/Yandex.Disk.localized/Study/mephi_labs/С++/libs/lab3_lib/src/Algos/PrimeNumbers/PrimeNumbers.cpp",
+  "output": "CMakeFiles/lab3_library.dir/Algos/PrimeNumbers/PrimeNumbers.cpp.o"
+}
+]

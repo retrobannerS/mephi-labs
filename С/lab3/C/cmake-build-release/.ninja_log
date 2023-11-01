@@ -1,0 +1,19 @@
+# ninja log v5
+0	55	6898591172142753	CMakeFiles/anton_privet.dir/rubish.c.obj	e2852fcc4aad6c69
+55	139	6898591172952940	anton_privet.exe	fe8a3676c4b765d6
+4	185	6902052944778878	CMakeFiles/lab3.dir/main.c.obj	ccc6c08dd532e62f
+0	110	6902365150437250	build.ninja	f9694bad7292beae
+0	95	6898542747303486	CMakeFiles/lab3.dir/rubish.c.obj	8a4384bab1ab094f
+186	408	6902052946942630	lab3.exe	5c41e8cfcc07744a
+4	49	6898554133534424	CMakeFiles/lab3.dir/func.c.obj	feb1e38131cbdaa2
+5	59	6898616765293434	CMakeFiles/lab3.dir/kaif.c.obj	638d9e21b7be6b72
+13	269	6902050607035963	CMakeFiles/lab3.dir/checking.c.obj	ac2d442d4e028618
+19	288	6902050607226018	CMakeFiles/lab3.dir/general.c.obj	5ffcbdff4de6b2f9
+2	102	6900702394028761	CMakeFiles/l.dir/optimized.c.obj	6adf2ba31cf627a6
+150	368	6902043248169878	l.exe	5ed1712fd728cb0d
+5	149	6902043246019195	CMakeFiles/l.dir/1.c.obj	4db814a5a9b7277e
+5	720	6902365150437250	build.ninja	f9694bad7292beae
+4	528	6902365157088740	CMakeFiles/lab3.dir/main.c.obj	ccc6c08dd532e62f
+529	1030	6902365162070043	lab3.exe	5c41e8cfcc07744a
+2	95	6902428033989715	CMakeFiles/lab3.dir/checking.c.obj	ac2d442d4e028618
+96	181	6902428034831915	lab3.exe	5c41e8cfcc07744a

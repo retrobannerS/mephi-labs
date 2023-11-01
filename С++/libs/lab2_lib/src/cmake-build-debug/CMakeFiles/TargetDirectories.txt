@@ -1,0 +1,3 @@
+C:/Users/Sasha/Desktop/Study/2 semestre/IT/lab2libbb/cmake-build-debug/CMakeFiles/lab2.dir
+C:/Users/Sasha/Desktop/Study/2 semestre/IT/lab2libbb/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Sasha/Desktop/Study/2 semestre/IT/lab2libbb/cmake-build-debug/CMakeFiles/rebuild_cache.dir
