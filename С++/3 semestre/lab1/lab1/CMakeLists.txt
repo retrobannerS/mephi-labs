@@ -26,10 +26,6 @@ set(TESTS "${CMAKE_CURRENT_SOURCE_DIR}/Tests")
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/googletest_lib" "googletest_lib")
 
-add_executable(lab1 main.cpp)
-target_link_libraries(lab1 ${LAB2_LIBRARY} ${LAB3_LIBRARY})
-target_include_directories(lab1 PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${SRC}")
-
 add_executable(lab1_tests tests/SmartPtrs_tests/UniquePtr_tests.cpp)
 target_include_directories(lab1_tests PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${SRC}" "${TESTS}")
 target_link_libraries(lab1_tests gtest gtest_main ${LAB2_LIBRARY} ${LAB3_LIBRARY})
