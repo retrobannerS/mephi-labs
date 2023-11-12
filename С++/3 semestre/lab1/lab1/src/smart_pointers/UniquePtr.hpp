@@ -6,47 +6,47 @@ namespace sem3 {
     template <typename T>
     class UniquePtr {
     private:
-        T* ptr_;
+        T *ptr_;
 
     public:
         UniquePtr() noexcept;
-        explicit UniquePtr(T* ptr_) noexcept;
-        UniquePtr(const UniquePtr&) = delete;
+        explicit UniquePtr(T *ptr_) noexcept;
+        UniquePtr(const UniquePtr &) = delete;
 
         ~UniquePtr();
 
-        UniquePtr<T>& operator=(const UniquePtr<T>&) = delete;
-        UniquePtr<T>& operator=(std::nullptr_t) noexcept;
+        UniquePtr<T> &operator=(const UniquePtr<T> &) = delete;
+        UniquePtr<T> &operator=(std::nullptr_t) noexcept;
 
-        T* release() noexcept;
-        void reset(T* ptr = nullptr) noexcept;
-        void swap(UniquePtr<T>& other) noexcept;
+        T *release() noexcept;
+        void reset(T *ptr = nullptr) noexcept;
+        void swap(UniquePtr<T> &other) noexcept;
 
-        T* get() const noexcept;
+        T *get() const noexcept;
         explicit operator bool() const noexcept;
 
-        T* operator->() const noexcept;
-        T& operator*() const noexcept;
+        T *operator->() const noexcept;
+        T &operator*() const noexcept;
 
-        friend bool operator==(const UniquePtr<T>& x, const UniquePtr<T>& y) noexcept { return x.get() == y.get(); }
-        friend bool operator!=(const UniquePtr<T>& x, const UniquePtr<T>& y) noexcept { return !(x == y); }
-        friend bool operator==(const UniquePtr<T>& x, std::nullptr_t) noexcept { return !x; }
-        friend bool operator==(std::nullptr_t, const UniquePtr<T>& x) noexcept { return !x; }
-        friend bool operator!=(const UniquePtr<T>& x, std::nullptr_t) noexcept { return (bool)x; }
-        friend bool operator!=(std::nullptr_t, const UniquePtr<T>& x) noexcept { return (bool)x; }
-        friend bool operator==(const T* x, const UniquePtr<T>& y) noexcept { return x == y.get(); }
-        friend bool operator==(const UniquePtr<T>& x, const T* y) noexcept { return y == x.get(); }
-        friend bool operator!=(const T* x, const UniquePtr<T>& y) noexcept { return x != y.get(); }
-        friend bool operator!=(const UniquePtr<T>& x, const T* y) noexcept { return y != x.get(); }
+        friend bool operator==(const UniquePtr<T> &x, const UniquePtr<T> &y) noexcept { return x.get() == y.get(); }
+        friend bool operator!=(const UniquePtr<T> &x, const UniquePtr<T> &y) noexcept { return !(x == y); }
+        friend bool operator==(const UniquePtr<T> &x, std::nullptr_t) noexcept { return !x; }
+        friend bool operator==(std::nullptr_t, const UniquePtr<T> &x) noexcept { return !x; }
+        friend bool operator!=(const UniquePtr<T> &x, std::nullptr_t) noexcept { return (bool)x; }
+        friend bool operator!=(std::nullptr_t, const UniquePtr<T> &x) noexcept { return (bool)x; }
+        friend bool operator==(const T *x, const UniquePtr<T> &y) noexcept { return x == y.get(); }
+        friend bool operator==(const UniquePtr<T> &x, const T *y) noexcept { return y == x.get(); }
+        friend bool operator!=(const T *x, const UniquePtr<T> &y) noexcept { return x != y.get(); }
+        friend bool operator!=(const UniquePtr<T> &x, const T *y) noexcept { return y != x.get(); }
 
-        friend void swap(UniquePtr<T>& lhs, UniquePtr<T>& rhs) noexcept { lhs.swap(rhs); }
+        friend void swap(UniquePtr<T> &lhs, UniquePtr<T> &rhs) noexcept { lhs.swap(rhs); }
     };
 
     template <typename T>
     UniquePtr<T>::UniquePtr() noexcept : ptr_(nullptr) {}
 
     template <typename T>
-    UniquePtr<T>::UniquePtr(T* ptr) noexcept : ptr_(ptr) {}
+    UniquePtr<T>::UniquePtr(T *ptr) noexcept : ptr_(ptr) {}
 
     template <typename T>
     UniquePtr<T>::~UniquePtr() {
@@ -54,27 +54,27 @@ namespace sem3 {
     }
 
     template <typename T>
-    UniquePtr<T>& UniquePtr<T>::operator=(std::nullptr_t) noexcept {
+    UniquePtr<T> &UniquePtr<T>::operator=(std::nullptr_t) noexcept {
         reset();
         return *this;
     }
 
     template <class T>
-    T* UniquePtr<T>::release() noexcept {
-        T* tmp = ptr_;
+    T *UniquePtr<T>::release() noexcept {
+        T *tmp = ptr_;
         ptr_ = nullptr;
         return tmp;
     }
 
     template <typename T>
-    void UniquePtr<T>::reset(T* ptr) noexcept {
+    void UniquePtr<T>::reset(T *ptr) noexcept {
         delete ptr_;
         ptr_ = ptr;
     }
 
     template <typename T>
-    void UniquePtr<T>::swap(UniquePtr<T>& other) noexcept {
-        T* tmp = ptr_;
+    void UniquePtr<T>::swap(UniquePtr<T> &other) noexcept {
+        T *tmp = ptr_;
         ptr_ = other.ptr_;
         other.ptr_ = tmp;
     }
@@ -85,20 +85,110 @@ namespace sem3 {
     }
 
     template <typename T>
-    T* UniquePtr<T>::get() const noexcept {
+    T *UniquePtr<T>::get() const noexcept {
         return ptr_;
     }
 
     template <typename T>
-    T* UniquePtr<T>::operator->() const noexcept {
+    T *UniquePtr<T>::operator->() const noexcept {
         return ptr_;
     }
 
     template <typename T>
-    T& UniquePtr<T>::operator*() const noexcept {
+    T &UniquePtr<T>::operator*() const noexcept {
         return *ptr_;
     }
 
-}  // namespace sem3
+    template <typename T>
+    class UniquePtr<T[]> {
+    private:
+        T *ptr_;
 
-#endif  // UNIQUE_PTR_HPP
+    public:
+        UniquePtr() noexcept;
+        explicit UniquePtr(T *ptr) noexcept;
+        UniquePtr(const UniquePtr &) = delete;
+
+        ~UniquePtr();
+
+        UniquePtr<T[]> &operator=(const UniquePtr<T> &) = delete;
+        UniquePtr<T[]> &operator=(std::nullptr_t) noexcept;
+
+        T *release() noexcept;
+        void reset(T *ptr = nullptr) noexcept;
+        void swap(UniquePtr<T[]> &other) noexcept;
+
+        T *get() const noexcept;
+        explicit operator bool() const noexcept;
+
+        T &operator[](std::size_t i) const;
+
+        friend bool operator==(const UniquePtr<T[]> &x, const UniquePtr<T[]> &y) noexcept { return x.get() == y.get(); }
+        friend bool operator!=(const UniquePtr<T[]> &x, const UniquePtr<T[]> &y) noexcept { return !(x == y); }
+        friend bool operator==(const UniquePtr<T[]> &x, std::nullptr_t) noexcept { return !x; }
+        friend bool operator==(std::nullptr_t, const UniquePtr<T[]> &x) noexcept { return !x; }
+        friend bool operator!=(const UniquePtr<T[]> &x, std::nullptr_t) noexcept { return (bool)x; }
+        friend bool operator!=(std::nullptr_t, const UniquePtr<T[]> &x) noexcept { return (bool)x; }
+        friend bool operator==(const T *x, const UniquePtr<T[]> &y) noexcept { return x == y.get(); }
+        friend bool operator==(const UniquePtr<T[]> &x, const T *y) noexcept { return y == x.get(); }
+        friend bool operator!=(const T *x, const UniquePtr<T[]> &y) noexcept { return x != y.get(); }
+        friend bool operator!=(const UniquePtr<T[]> &x, const T *y) noexcept { return y != x.get(); }
+
+        friend void swap(UniquePtr<T[]> &lhs, UniquePtr<T[]> &rhs) noexcept { lhs.swap(rhs); }
+    };
+
+    template <typename T>
+    UniquePtr<T[]>::UniquePtr() noexcept : ptr_(nullptr) {}
+
+    template <typename T>
+    UniquePtr<T[]>::UniquePtr(T *ptr) noexcept : ptr_(ptr) {}
+
+    template <typename T>
+    UniquePtr<T[]>::~UniquePtr() {
+        delete[] ptr_;
+    }
+
+    template <typename T>
+    UniquePtr<T[]> &UniquePtr<T[]>::operator=(std::nullptr_t) noexcept {
+        reset();
+        return *this;
+    }
+
+    template <typename T>
+    T *UniquePtr<T[]>::release() noexcept {
+        T *tmp = ptr_;
+        ptr_ = nullptr;
+        return tmp;
+    }
+
+    template <typename T>
+    void UniquePtr<T[]>::reset(T *ptr) noexcept {
+        delete[] ptr_;
+        ptr_ = ptr;
+    }
+
+    template <typename T>
+    void UniquePtr<T[]>::swap(UniquePtr<T[]> &other) noexcept {
+        T *tmp = ptr_;
+        ptr_ = other.ptr_;
+        other.ptr_ = tmp;
+    }
+
+    template <typename T>
+    T *UniquePtr<T[]>::get() const noexcept {
+        return ptr_;
+    }
+
+    template <typename T>
+    UniquePtr<T[]>::operator bool() const noexcept {
+        return ptr_ != nullptr;
+    }
+
+    template <typename T>
+    T &UniquePtr<T[]>::operator[](std::size_t i) const {
+        return ptr_[i];
+    }
+
+} // namespace sem3
+
+#endif // UNIQUE_PTR_HPP
