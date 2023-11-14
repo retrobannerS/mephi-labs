@@ -184,6 +184,55 @@ TEST(UniquePtrTests, SwapFunction) {
     ASSERT_EQ(*ptr2, 42);
 }
 
+TEST(UniquePtrTests, MoveConstructor) {
+    // arrange
+    UniquePtr<int> ptr1(new int(42));
+
+    // act
+    UniquePtr<int> ptr2(std::move(ptr1));
+
+    // assert
+    EXPECT_EQ(*ptr2, 42);
+    EXPECT_EQ(ptr1.get(), nullptr);
+}
+
+TEST(UniquePtrTests, AssignmentOperatorForDifferentObjects) {
+    // arrange
+    UniquePtr<int> ptr1(new int(42));
+    UniquePtr<int> ptr2(new int(13));
+
+    // act
+    ptr1 = std::move(ptr2);
+
+    // assert
+    EXPECT_EQ(*ptr1, 13);
+    EXPECT_EQ(ptr2.get(), nullptr);
+}
+
+TEST(UniquePtrTests, AssignmentOperatorForSameObject) {
+    // arrange
+    UniquePtr<int> ptr(new int(42));
+
+    // act
+    ptr = std::move(ptr);
+
+    // assert
+    EXPECT_EQ(*ptr, 42);
+}
+
+TEST(UniquePtrTests, AssignmentOperatorForEmptyObject) {
+    // arrange
+    UniquePtr<int> ptr1(new int(42));
+    UniquePtr<int> ptr2;
+
+    // act
+    ptr1 = std::move(ptr2);
+
+    // assert
+    EXPECT_EQ(ptr1.get(), nullptr);
+    EXPECT_EQ(ptr2.get(), nullptr);
+}
+
 TEST(UniquePtrArrayTests, EmptyConstructor) {
     // arrange
 
@@ -238,7 +287,7 @@ TEST(UniquePtrArrayTests, ReleaseMethod) {
 TEST(UniquePtrArrayTests, ResetMethod) {
     // arrange
     UniquePtr<int[]> ptr(new int[42]);
-    int* rawPtr = new int[1];
+    int *rawPtr = new int[1];
     rawPtr[0] = 515;
 
     // act
@@ -348,4 +397,56 @@ TEST(UniquePtrArrayTests, BooleanOperators) {
     ASSERT_EQ(test_ptr1, real_ptr1.get());
     ASSERT_EQ(real_ptr1.get(), test_ptr1);
     ASSERT_NE(test_ptr1, real_ptr2.get());
+}
+
+TEST(UniquePtrArrayTests, MoveConstructor) {
+    // arrange
+    UniquePtr<int[]> ptr1(new int[2]{42, 43});
+
+    // act
+    UniquePtr<int[]> ptr2(std::move(ptr1));
+
+    // assert
+    EXPECT_EQ(ptr2[0], 42);
+    EXPECT_EQ(ptr2[1], 43);
+    EXPECT_EQ(ptr1.get(), nullptr);
+}
+
+TEST(UniquePtrArrayTests, AssignmentOperatorForDifferentObjects) {
+    // arrange
+    UniquePtr<int[]> ptr1(new int[2]{42, 43});
+    UniquePtr<int[]> ptr2(new int[2]{13, 14});
+
+    // act
+    ptr1 = std::move(ptr2);
+
+    // assert
+    EXPECT_EQ(ptr1[0], 13);
+    EXPECT_EQ(ptr1[1], 14);
+    EXPECT_EQ(ptr2.get(), nullptr);
+}
+
+TEST(UniquePtrArrayTests, AssignmentOperatorForSameObject) {
+    // arrange
+    UniquePtr<int[]> ptr(new int[2]{42, 43});
+
+    // act
+    ptr = std::move(ptr);
+
+    // assert
+    EXPECT_EQ(ptr[0], 42);
+    EXPECT_EQ(ptr[1], 43);
+}
+
+TEST(UniquePtrArrayTests, AssignmentOperatorForEmptyObject) {
+    // arrange
+    UniquePtr<int[]> ptr1(new int[2]{42, 43});
+    UniquePtr<int[]> ptr2;
+
+    // act
+    ptr1 = std::move(ptr2);
+
+    // assert
+    EXPECT_EQ(ptr1.get(), nullptr);
+    EXPECT_EQ(ptr2.get(), nullptr);
 }

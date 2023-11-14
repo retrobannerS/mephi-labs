@@ -12,10 +12,12 @@ namespace sem3 {
         UniquePtr() noexcept;
         explicit UniquePtr(T *ptr_) noexcept;
         UniquePtr(const UniquePtr &) = delete;
+        UniquePtr(UniquePtr &&other) noexcept;
 
         ~UniquePtr();
 
         UniquePtr<T> &operator=(const UniquePtr<T> &) = delete;
+        UniquePtr<T> &operator=(UniquePtr<T> &&other) noexcept;
         UniquePtr<T> &operator=(std::nullptr_t) noexcept;
 
         T *release() noexcept;
@@ -49,8 +51,18 @@ namespace sem3 {
     UniquePtr<T>::UniquePtr(T *ptr) noexcept : ptr_(ptr) {}
 
     template <typename T>
+    UniquePtr<T>::UniquePtr(UniquePtr &&other) noexcept : ptr_(other.release()) {}
+
+    template <typename T>
     UniquePtr<T>::~UniquePtr() {
         delete ptr_;
+    }
+
+    template <typename T>
+    UniquePtr<T> &UniquePtr<T>::operator=(UniquePtr<T> &&other) noexcept {
+        if (this != &other)
+            reset(other.release());
+        return *this;
     }
 
     template <typename T>
@@ -108,10 +120,12 @@ namespace sem3 {
         UniquePtr() noexcept;
         explicit UniquePtr(T *ptr) noexcept;
         UniquePtr(const UniquePtr &) = delete;
+        UniquePtr(UniquePtr<T[]> &&other) noexcept;
 
         ~UniquePtr();
 
-        UniquePtr<T[]> &operator=(const UniquePtr<T> &) = delete;
+        UniquePtr<T[]> &operator=(const UniquePtr<T[]> &) = delete;
+        UniquePtr<T[]> &operator=(UniquePtr<T[]> &&other) noexcept;
         UniquePtr<T[]> &operator=(std::nullptr_t) noexcept;
 
         T *release() noexcept;
@@ -144,8 +158,18 @@ namespace sem3 {
     UniquePtr<T[]>::UniquePtr(T *ptr) noexcept : ptr_(ptr) {}
 
     template <typename T>
+    UniquePtr<T[]>::UniquePtr(UniquePtr<T[]> &&other) noexcept : ptr_(other.release()) {}
+
+    template <typename T>
     UniquePtr<T[]>::~UniquePtr() {
         delete[] ptr_;
+    }
+
+    template <typename T>
+    UniquePtr<T[]> &UniquePtr<T[]>::operator=(UniquePtr<T[]> &&other) noexcept {
+        if (this != &other)
+            reset(other.release());
+        return *this;
     }
 
     template <typename T>
