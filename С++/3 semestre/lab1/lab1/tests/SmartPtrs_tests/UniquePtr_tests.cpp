@@ -3,6 +3,90 @@
 
 using namespace sem3;
 
+TEST(UniquePtrTests, MakeUnique) {
+    // Arrange
+    int expected_value = 42;
+
+
+    // Act
+    auto ptr = make_unique<int>(expected_value);
+
+    // Assert
+    ASSERT_NE(ptr, nullptr);
+    EXPECT_EQ(*ptr, expected_value);
+}
+
+TEST(UniquePtrTests, MakeUniqueForStructure) {
+    // Arrange
+    struct TestStruct {
+        int id;
+        std::string name;
+    };
+    int expected_id = 42;
+    std::string expected_name = "Test";
+
+    // Act
+    auto ptr = make_unique<TestStruct>(TestStruct{expected_id, expected_name});
+
+    // Assert
+    ASSERT_NE(ptr, nullptr);
+    EXPECT_EQ(ptr->id, expected_id);
+    EXPECT_EQ(ptr->name, expected_name);
+}
+
+TEST(UniquePtrTests, MakeUniqueForCustomClass) {
+    // Arrange
+    class TestClass {
+    public:
+        TestClass(int id, std::string name) : id(id), name(name) {}
+        TestClass(TestClass &other) = delete;
+        int getId() const { return id; }
+        std::string getName() const { return name; }
+    private:
+        int id;
+        std::string name;
+    };
+    int expected_id = 42;
+    std::string expected_name = "Test";
+
+    // Act
+    //auto ptr = make_unique<TestClass>(std::move(TestClass(expected_id, expected_name)));
+    //auto ptr = make_unique<TestClass>(expected_id, expected_name);
+    auto ptr = make_unique<TestClass>(expected_id, expected_name);
+
+    // Assert
+    ASSERT_NE(ptr, nullptr);
+    EXPECT_EQ(ptr->getId(), expected_id);
+    EXPECT_EQ(ptr->getName(), expected_name);
+}
+
+TEST(UniquePtrTests, MoveSemantics) {
+    // Arrange
+    UniquePtr<int> ptr1(new int(42));
+
+    // Act
+    UniquePtr<int> ptr2 = std::move(ptr1);
+
+    // Assert
+    EXPECT_EQ(*ptr2, 42);
+    EXPECT_EQ(ptr1.get(), nullptr);
+}
+
+TEST(UniquePtrTests, NullptrAfterRelease) {
+    // Arrange
+    UniquePtr<int> ptr(new int(42));
+
+    // Act
+    int* raw_ptr = ptr.release();
+
+    // Assert
+    EXPECT_EQ(*raw_ptr, 42);
+    EXPECT_EQ(ptr.get(), nullptr);
+
+    // Clean up
+    delete raw_ptr;
+}
+
 TEST(UniquePtrTests, EmptyConstructor) {
     // arrange
 

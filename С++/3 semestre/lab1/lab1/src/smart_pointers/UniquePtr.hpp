@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace sem3 {
+
     template <typename T>
     class UniquePtr {
     private:
@@ -213,6 +214,15 @@ namespace sem3 {
         return ptr_[i];
     }
 
+    template <typename T, typename... Args>
+    typename std::enable_if<!std::is_array<T>::value, UniquePtr<T>>::type make_unique(Args &&...args) {
+        return UniquePtr<T>(new T(std::forward<Args>(args)...));
+    }
+
+    template <typename T>
+    typename std::enable_if<std::is_array<T>::value, UniquePtr<T>>::type make_unique(std::size_t size) {
+        return UniquePtr<T>(new typename std::remove_extent<T>::type[size]());
+    }
 } // namespace sem3
 
 #endif // UNIQUE_PTR_HPP
