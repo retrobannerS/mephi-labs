@@ -7,7 +7,6 @@ TEST(UniquePtrTests, MakeUnique) {
     // Arrange
     int expected_value = 42;
 
-
     // Act
     auto ptr = make_unique<int>(expected_value);
 
@@ -21,7 +20,7 @@ TEST(UniquePtrTests, MakeUniqueForStructure) {
     struct TestStruct {
         int id;
         std::string name;
-        TestStruct(int id, std::string name) : id(id), name(name) {};
+        TestStruct(int id, std::string name) : id(id), name(name){};
     };
     int expected_id = 42;
     std::string expected_name = "Test";
@@ -43,6 +42,7 @@ TEST(UniquePtrTests, MakeUniqueForCustomClass) {
         TestClass(TestClass &other) = delete;
         int getId() const { return id; }
         std::string getName() const { return name; }
+
     private:
         int id;
         std::string name;
@@ -76,7 +76,7 @@ TEST(UniquePtrTests, NullptrAfterRelease) {
     UniquePtr<int> ptr(new int(42));
 
     // Act
-    int* raw_ptr = ptr.release();
+    int *raw_ptr = ptr.release();
 
     // Assert
     EXPECT_EQ(*raw_ptr, 42);
@@ -328,6 +328,7 @@ TEST(UniquePtrArrayTests, MakeUniqueForCustomClass) {
         TestClass(TestClass &other) = delete;
         int getId() const { return id; }
         std::string getName() const { return name; }
+
     private:
         int id;
         std::string name;
