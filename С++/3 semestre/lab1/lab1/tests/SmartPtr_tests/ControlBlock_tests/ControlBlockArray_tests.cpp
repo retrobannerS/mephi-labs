@@ -9,6 +9,9 @@ TEST(ControlBlockArrayTests, Constructor) {
     EXPECT_NE(block.get(), nullptr);
     EXPECT_EQ(block.get()[0], 10);
     EXPECT_EQ(block.get_ref_count(), 1);
+
+    //delete
+    block.decrement_ref_count_and_delete_if_0();
 }
 
 TEST(ControlBlockArrayTests, IncrementRefCount) {
@@ -20,6 +23,10 @@ TEST(ControlBlockArrayTests, IncrementRefCount) {
 
     //assert
     EXPECT_EQ(block.get_ref_count(), 2);
+
+    //delete
+    block.decrement_ref_count_and_delete_if_0();
+    block.decrement_ref_count_and_delete_if_0();
 }
 
 TEST(ControlBlockArrayTests, DecrementRefCount) {
