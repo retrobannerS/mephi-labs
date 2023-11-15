@@ -87,9 +87,9 @@ namespace sem3 {
 
     template <typename T>
     void UniquePtr<T>::swap(UniquePtr<T> &other) noexcept {
-        T *tmp = ptr_;
-        ptr_ = other.ptr_;
-        other.ptr_ = tmp;
+        T *tmp = std::move(ptr_);
+        ptr_ = std::move(other.ptr_);
+        other.ptr_ = std::move(tmp);
     }
 
     template <typename T>
