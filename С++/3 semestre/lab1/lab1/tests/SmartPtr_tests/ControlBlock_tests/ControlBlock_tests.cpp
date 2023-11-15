@@ -28,6 +28,7 @@ TEST(ControlBlockTests, IncrementRefCount) {
 
     // delete
     block.decrement_ref_count_and_delete_if_0();
+    block.decrement_ref_count_and_delete_if_0();
 }
 
 TEST(ControlBlockTests, DecrementRefCount) {
