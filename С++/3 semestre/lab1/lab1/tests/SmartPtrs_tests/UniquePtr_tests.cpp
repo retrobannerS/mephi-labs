@@ -21,12 +21,13 @@ TEST(UniquePtrTests, MakeUniqueForStructure) {
     struct TestStruct {
         int id;
         std::string name;
+        TestStruct(int id, std::string name) : id(id), name(name) {};
     };
     int expected_id = 42;
     std::string expected_name = "Test";
 
     // Act
-    auto ptr = make_unique<TestStruct>(TestStruct{expected_id, expected_name});
+    auto ptr = sem3::make_unique<TestStruct>(expected_id, expected_name);
 
     // Assert
     ASSERT_NE(ptr, nullptr);
@@ -50,9 +51,7 @@ TEST(UniquePtrTests, MakeUniqueForCustomClass) {
     std::string expected_name = "Test";
 
     // Act
-    //auto ptr = make_unique<TestClass>(std::move(TestClass(expected_id, expected_name)));
-    //auto ptr = make_unique<TestClass>(expected_id, expected_name);
-    auto ptr = make_unique<TestClass>(expected_id, expected_name);
+    UniquePtr<TestClass> ptr = sem3::make_unique<TestClass>(expected_id, expected_name);
 
     // Assert
     ASSERT_NE(ptr, nullptr);
@@ -278,6 +277,74 @@ TEST(UniquePtrTests, MoveConstructor) {
     // assert
     EXPECT_EQ(*ptr2, 42);
     EXPECT_EQ(ptr1.get(), nullptr);
+}
+
+TEST(UniquePtrArrayTests, MakeUnique) {
+    // Arrange
+    std::array<int, 3> expected_values = {42, 43, 44};
+
+    // Act
+    auto ptr = sem3::make_unique<int[]>(3);
+    ptr[0] = 42;
+    ptr[1] = 43;
+    ptr[2] = 44;
+
+    // Assert
+    ASSERT_NE(ptr, nullptr);
+    EXPECT_EQ(ptr[0], expected_values[0]);
+    EXPECT_EQ(ptr[1], expected_values[1]);
+    EXPECT_EQ(ptr[2], expected_values[2]);
+}
+
+TEST(UniquePtrArrayTests, MakeUniqueForStructs) {
+    // Arrange
+    struct TestStruct {
+        int id;
+        std::string name;
+        TestStruct() : id(0), name("") {}
+        TestStruct(int id, std::string name) : id(id), name(name) {}
+    };
+    std::array<TestStruct, 2> expected_values = {TestStruct(42, "Test1"), TestStruct(43, "Test2")};
+
+    // Act
+    auto ptr = sem3::make_unique<TestStruct[]>(2);
+    ptr[0] = TestStruct(42, "Test1");
+    ptr[1] = TestStruct(43, "Test2");
+
+    // Assert
+    ASSERT_NE(ptr, nullptr);
+    EXPECT_EQ(ptr[0].id, expected_values[0].id);
+    EXPECT_EQ(ptr[0].name, expected_values[0].name);
+    EXPECT_EQ(ptr[1].id, expected_values[1].id);
+    EXPECT_EQ(ptr[1].name, expected_values[1].name);
+}
+
+TEST(UniquePtrArrayTests, MakeUniqueForCustomClass) {
+    // Arrange
+    class TestClass {
+    public:
+        TestClass() : id(0), name("") {}
+        TestClass(int id, std::string name) : id(id), name(name) {}
+        TestClass(TestClass &other) = delete;
+        int getId() const { return id; }
+        std::string getName() const { return name; }
+    private:
+        int id;
+        std::string name;
+    };
+    std::array<TestClass, 2> expected_values = {TestClass(42, "Test1"), TestClass(43, "Test2")};
+
+    // Act
+    auto ptr = sem3::make_unique<TestClass[]>(2);
+    ptr[0] = TestClass(42, "Test1");
+    ptr[1] = TestClass(43, "Test2");
+
+    // Assert
+    ASSERT_NE(ptr, nullptr);
+    EXPECT_EQ(ptr[0].getId(), expected_values[0].getId());
+    EXPECT_EQ(ptr[0].getName(), expected_values[0].getName());
+    EXPECT_EQ(ptr[1].getId(), expected_values[1].getId());
+    EXPECT_EQ(ptr[1].getName(), expected_values[1].getName());
 }
 
 TEST(UniquePtrTests, AssignmentOperatorForDifferentObjects) {
