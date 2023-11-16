@@ -301,8 +301,6 @@ namespace sem3 {
         return get() != nullptr;
     }
 
-    
-
     template <class T, class... Args>
     typename std::enable_if<!std::is_array<T>::value, SharedPtr<T>>::type make_shared(Args &&...args) {
         return SharedPtr<T>(new T(std::forward<Args>(args)...));

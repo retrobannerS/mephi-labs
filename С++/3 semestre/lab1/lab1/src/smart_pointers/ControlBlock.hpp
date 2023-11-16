@@ -41,16 +41,17 @@ namespace sem3 {
         if (ptr_ == nullptr)
             throw std::logic_error("pointer is nullptr");
 
-        // if (--ref_count == 0) {
+        if (--ref_count == 0) {
+            delete ptr_;
+            ptr_ = nullptr;
+            delete this;
+        }
+
+        // if (ref_count == 1) {
         //     delete ptr_;
         //     ptr_ = nullptr;
         // }
-
-        if (ref_count == 1) {
-            delete ptr_;
-            ptr_ = nullptr;
-        }
-        --ref_count;
+        // --ref_count;
         // if (ref_count + weak_ptr_reference_counter_ == 0)
         //     delete this;
     }
@@ -106,6 +107,7 @@ namespace sem3 {
         if (--ref_count == 0) {
             delete[] ptr_;
             ptr_ = nullptr;
+            delete this;
         }
 
         // if (ref_count == 1) {
@@ -126,7 +128,5 @@ namespace sem3 {
     size_t ControlBlock<T[]>::get_ref_count() const noexcept {
         return ref_count;
     }
-
-    
 
 } // namespace sem3
