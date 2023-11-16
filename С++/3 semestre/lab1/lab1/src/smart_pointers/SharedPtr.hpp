@@ -1,6 +1,7 @@
 #pragma once
 
 #include "smart_pointers/ControlBlock.hpp"
+#include "smart_pointers/WeakPtr.hpp"
 #include <stdexcept>
 #include <utility>
 
@@ -12,9 +13,12 @@ namespace sem3 {
 
         void update_reference(ControlBlock<T> *new_control_block);
 
+        friend class WeakPtr<T>;
+
     public:
         SharedPtr() noexcept;
         explicit SharedPtr(T *ptr) noexcept;
+        SharedPtr(const WeakPtr<T> &other);
         explicit SharedPtr(std::nullptr_t) noexcept;
 
         SharedPtr(const SharedPtr &other) noexcept;
@@ -62,6 +66,15 @@ namespace sem3 {
 
     template <typename T>
     SharedPtr<T>::SharedPtr(T *ptr) noexcept : block(new ControlBlock<T>(ptr)) {}
+
+    template <typename T>
+    SharedPtr<T>::SharedPtr(const WeakPtr<T> &other) {
+        if (other.expired())
+            throw std::runtime_error("WeakPtr is expired");
+        block = other.block;
+        if (block && block->get() != nullptr)
+            block->increment_ref_count();
+    }
 
     template <typename T>
     SharedPtr<T>::SharedPtr(std::nullptr_t) noexcept : block(nullptr) {}
@@ -163,9 +176,12 @@ namespace sem3 {
 
         void update_reference(ControlBlock<T[]> *new_control_block);
 
+        friend class WeakPtr<T[]>;
+
     public:
         SharedPtr() noexcept;
         explicit SharedPtr(T *ptr) noexcept;
+        explicit SharedPtr(const WeakPtr<T[]> &other);
         explicit SharedPtr(std::nullptr_t) noexcept;
 
         SharedPtr(const SharedPtr &other) noexcept;
@@ -212,6 +228,15 @@ namespace sem3 {
 
     template <typename T>
     SharedPtr<T[]>::SharedPtr(T *ptr) noexcept : block(new ControlBlock<T[]>(ptr)) {}
+
+    template <typename T>
+    SharedPtr<T[]>::SharedPtr(const WeakPtr<T[]> &other) {
+        if (other.expired())
+            throw std::runtime_error("WeakPtr is expired");
+        block = other.block;
+        if (block && block->get() != nullptr)
+            block->increment_ref_count();
+    }
 
     template <typename T>
     SharedPtr<T[]>::SharedPtr(std::nullptr_t) noexcept : block(nullptr) {}
