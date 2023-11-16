@@ -3,6 +3,26 @@
 
 using namespace sem3;
 
+TEST(UniquePtrTests, MakeUniqueArray) {
+    // arrange & act
+    auto ptr = make_unique<int[]>(10);
+
+    // assert
+    EXPECT_NE(ptr.get(), nullptr);
+}
+
+TEST(UniquePtrTests, MakeUniqueArrayMove) {
+    // arrange
+    auto ptr1 = make_unique<int[]>(10);
+
+    // act
+    UniquePtr<int[]> ptr2 = std::move(ptr1);
+
+    // assert
+    EXPECT_NE(ptr2.get(), nullptr);
+    EXPECT_EQ(ptr1.get(), nullptr);
+}
+
 TEST(UniquePtrArrayTests, EmptyConstructor) {
     // arrange
 

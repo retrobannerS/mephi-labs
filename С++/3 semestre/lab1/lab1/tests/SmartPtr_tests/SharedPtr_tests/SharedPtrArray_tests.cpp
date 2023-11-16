@@ -3,6 +3,17 @@
 
 using namespace sem3;
 
+
+TEST(SharedPtrTests, MakeSharedForArray) {
+    // arrange & act
+    auto ptr = make_shared<int[]>(10);
+
+    // assert
+    EXPECT_NE(ptr.get(), nullptr);
+    EXPECT_EQ(ptr.use_count(), 1);
+}
+
+
 TEST(SharedPtrArrayTests, EmptyConstructor) {
     //arrange
     SharedPtr<int[]> ptr;

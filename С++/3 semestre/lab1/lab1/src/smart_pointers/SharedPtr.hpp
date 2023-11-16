@@ -301,12 +301,12 @@ namespace sem3 {
         return get() != nullptr;
     }
 
-    template <class T, class... Args>
+    template <typename T, typename... Args>
     typename std::enable_if<!std::is_array<T>::value, SharedPtr<T>>::type make_shared(Args &&...args) {
         return SharedPtr<T>(new T(std::forward<Args>(args)...));
     }
 
-    template <class T>
+    template <typename T>
     typename std::enable_if<std::is_array<T>::value, SharedPtr<T>>::type make_shared(std::size_t size) {
         return SharedPtr<T>(new typename std::remove_extent<T>::type[size]());
     }

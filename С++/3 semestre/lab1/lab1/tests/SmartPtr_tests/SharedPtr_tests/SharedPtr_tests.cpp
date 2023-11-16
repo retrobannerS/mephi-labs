@@ -5,6 +5,81 @@
 
 using namespace sem3;
 
+TEST(SharedPtrTests, MakeShared) {
+    // arrange & act
+    auto ptr = make_shared<int>(10);
+
+    // assert
+    EXPECT_NE(ptr.get(), nullptr);
+    EXPECT_EQ(*ptr, 10);
+    EXPECT_EQ(ptr.use_count(), 1);
+}
+
+TEST(SharedPtrTests, MakeSharedWithMultipleArguments) {
+    // arrange & act
+    auto ptr = make_shared<std::pair<int, std::string>>(10, "test");
+
+    // assert
+    EXPECT_NE(ptr.get(), nullptr);
+    EXPECT_EQ(ptr->first, 10);
+    EXPECT_EQ(ptr->second, "test");
+    EXPECT_EQ(ptr.use_count(), 1);
+}
+
+class CustomClass {
+public:
+    CustomClass(int x, std::string y) : x_(x), y_(y) {}
+
+    int getX() const { return x_; }
+    std::string getY() const { return y_; }
+
+private:
+    int x_;
+    std::string y_;
+};
+
+TEST(SharedPtrTests, CustomClass) {
+    // arrange & act
+    auto ptr = make_shared<CustomClass>(10, "test");
+
+    // assert
+    EXPECT_NE(ptr.get(), nullptr);
+    EXPECT_EQ(ptr->getX(), 10);
+    EXPECT_EQ(ptr->getY(), "test");
+    EXPECT_EQ(ptr.use_count(), 1);
+}
+
+TEST(SharedPtrTests, CustomClassCopy) {
+    // arrange
+    auto ptr1 = make_shared<CustomClass>(10, "test");
+
+    // act
+    SharedPtr<CustomClass> ptr2 = ptr1;
+
+    // assert
+    EXPECT_NE(ptr2.get(), nullptr);
+    EXPECT_EQ(ptr2->getX(), 10);
+    EXPECT_EQ(ptr2->getY(), "test");
+    EXPECT_EQ(ptr2.use_count(), 2);
+    EXPECT_EQ(ptr1.use_count(), 2);
+}
+
+TEST(SharedPtrTests, CustomClassMove) {
+    // arrange
+    auto ptr1 = make_shared<CustomClass>(10, "test");
+
+    // act
+    SharedPtr<CustomClass> ptr2 = std::move(ptr1);
+
+    // assert
+    EXPECT_NE(ptr2.get(), nullptr);
+    EXPECT_EQ(ptr2->getX(), 10);
+    EXPECT_EQ(ptr2->getY(), "test");
+    EXPECT_EQ(ptr2.use_count(), 1);
+    EXPECT_EQ(ptr1.get(), nullptr);
+    EXPECT_EQ(ptr1.use_count(), 0);
+}
+
 TEST(SharedPtrTests, EmptyConstructor) {
     //arrange
     SharedPtr<int> ptr;
