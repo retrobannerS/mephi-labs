@@ -111,6 +111,7 @@ namespace sem3 {
 
         ptr_ = ptr;
         ref_count = 1;
+        weak_ref_count = 0;
     }
 
     template <typename T>
@@ -127,6 +128,7 @@ namespace sem3 {
             delete[] ptr_;
             ptr_ = nullptr;
         }
+
         --ref_count;
         if (ref_count + weak_ref_count == 0)
             delete this;
