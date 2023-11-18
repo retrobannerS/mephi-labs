@@ -35,6 +35,7 @@ add_executable(lab1_tests
                 tests/SmartPtr_tests/SharedPtr_tests/SharedPtrArray_tests.cpp
                 tests/SmartPtr_tests/WeakPtr_tests/WeakPtr_tests.cpp
                 tests/SmartPtr_tests/WeakPtr_tests/WeakPtrArray_tests.cpp
+                tests/DataClasses_tests/SmartDynamicArray_tests.cpp
                 )
 target_include_directories(lab1_tests PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${SRC}" "${TESTS}")
 target_link_libraries(lab1_tests gtest gtest_main ${LAB2_LIBRARY} ${LAB3_LIBRARY})
