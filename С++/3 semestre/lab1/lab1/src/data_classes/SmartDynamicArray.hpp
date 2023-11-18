@@ -62,7 +62,7 @@ namespace sem3 {
         if (size < 0) {
             throw std::invalid_argument("Size must be positive");
         } else {
-            size = size;
+            this->size = size;
             data = make_shared<T[]>(size);
             for (int i = 0; i < size; i++) {
                 data[i] = item;
