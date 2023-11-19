@@ -135,7 +135,7 @@ namespace sem3 {
     template <typename T>
     SmartArraySequence<T>::SmartArraySequence(const SmartSequence<T> *sequence) {
         size = sequence->getSize();
-        array = make_unique<SmartDynamicArray>(2 * size);
+        array = make_unique<SmartDynamicArray<T>>(2 * size);
         for (int i = 0; i < size; ++i) {
             set(i, sequence->get(i));
         }
@@ -152,7 +152,7 @@ namespace sem3 {
     template <typename T>
     SmartArraySequence<T>::SmartArraySequence(const SmartArraySequence<T> &other) {
         size = other.size;
-        array = make_unique<SmartDynamicArray>(other.array);
+        array = make_unique<SmartDynamicArray<T>>(other.array);
     }
 
     template <typename T>
@@ -167,7 +167,7 @@ namespace sem3 {
             return *this;
         }
         size = other.size;
-        array = make_unique<SmartDynamicArray>(other.array);
+        array = make_unique<SmartDynamicArray<T>>(other.array);
         return *this;
     }
 
