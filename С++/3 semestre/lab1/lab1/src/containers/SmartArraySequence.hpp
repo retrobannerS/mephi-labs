@@ -245,7 +245,7 @@ namespace sem3 {
 
     template <typename T>
     SharedPtr<SmartSequence<T>> SmartArraySequence<T>::concat(const SmartSequence<T> &other) const {
-        auto result = new SmartArraySequence<T>(size + other.getSize());
+        SmartSequence<T> *result = new SmartArraySequence<T>(size + other.getSize());
         for (int i = 0; i < size; ++i) {
             result->set(i, get(i));
         }
