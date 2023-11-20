@@ -38,7 +38,7 @@ namespace sem3 {
         T get(int index) const override;
         int getSize() const override;
         int getCapacity() const;
-        // SmartArraySequence<T> getSubSequence(int startIndex, int endIndex) const;
+        SharedPtr<SmartSequence<T>> getSubSequence(int startIndex, int endIndex) const override;
         // SharedPtr<SmartSequence<T>> getSubSequencePtr(int startIndex, int endIndex) const override;
 
         void set(int index, const T &item) override;
@@ -48,19 +48,22 @@ namespace sem3 {
         void removeAt(int index) override;
 
         T &operator[](int index) override;
-        SmartArraySequence<T> concat(const SmartArraySequence<T> &other) const;
+        SharedPtr<SmartSequence<T>> concat(const SmartSequence<T> &other) const override;
 
         void resize(int new_size);
         void resize(int new_size, const T &item);
         void reserve(int new_size);
 
-        void clear();
-        bool empty() const;
+        void clear() override;
+        
+        SharedPtr<SmartSequence<T>> map(T (*mapper)(const T &)) const override;
+        SharedPtr<SmartSequence<T>> where(bool (*predicate)(const T &)) const override;
+        T reduce(T (*reducer)(const T &, const T &), const T &initialValue) const override;
     };
 
     template <typename T>
     void SmartArraySequence<T>::autoReserve() {
-        if (empty()) {
+        if (this->empty()) {
             array->resize(3);
         } else if (size >= getCapacity()) {
             array->resize(getCapacity() * 2);
@@ -69,7 +72,7 @@ namespace sem3 {
 
     template <typename T>
     void SmartArraySequence<T>::autoShrink() {
-        if (empty()) {
+        if (this->empty()) {
             array->resize(3);
         } else if (size <= getCapacity() / 3) {
             array->resize(getCapacity() / 2);
@@ -77,10 +80,10 @@ namespace sem3 {
     }
 
     template <typename T>
-    SmartArraySequence<T>::SmartArraySequence() : array(make_unique<SmartDynamicArray<T>>()), size(0) {}
+    SmartArraySequence<T>::SmartArraySequence() : array(make_unique<SmartDynamicArray<T>>(3)), size(0) {}
 
     template <typename T>
-    SmartArraySequence<T>::SmartArraySequence(int size) : array(make_unique<SmartDynamicArray<T>>(size)), size(size) {}
+    SmartArraySequence<T>::SmartArraySequence(int size) : array(make_unique<SmartDynamicArray<T>>(2 * size)), size(size) {}
 
     template <typename T>
     SmartArraySequence<T>::SmartArraySequence(int size, const T &item)
@@ -191,22 +194,15 @@ namespace sem3 {
         return array->getSize();
     }
 
-    // template <typename T>
-    // SmartArraySequence<T> SmartArraySequence<T>::getSubSequence(int startIndex, int endIndex) const {
-    //     if (startIndex < 0 || startIndex >= size || endIndex < 0 || endIndex > size) {
-    //         throw std::out_of_range("Index out of range");
-    //     } else if (startIndex > endIndex) {
-    //         throw std::invalid_argument("Start index is greater than end index");
-    //     }
-    //     SmartDynamicArray<T> subArray = array->getSubArray(startIndex, endIndex);
-    //     SmartArraySequence<T> subSequence = SmartArraySequence<T>(subArray);
-    //     return subSequence;
-    // }
-
-    // template <typename T>
-    // SharedPtr<SmartSequence<T>> SmartArraySequence<T>::getSubSequencePtr(int startIndex, int endIndex) const {
-    //     return SharedPtr<SmartSequence<T>>(&getSubSequence(startIndex, endIndex));
-    // }
+    template <typename T>
+    SharedPtr<SmartSequence<T>> SmartArraySequence<T>::getSubSequence(int startIndex, int endIndex) const {
+        if (startIndex < 0 || startIndex >= size || endIndex < 0 || endIndex > size) {
+            throw std::out_of_range("Index out of range");
+        } else if (startIndex > endIndex) {
+            throw std::invalid_argument("Start index is greater than end index");
+        }
+        return SharedPtr<SmartSequence<T>>(new SmartArraySequence<T>(array->getSubArray(startIndex, endIndex)));
+    }
 
     template <typename T>
     void SmartArraySequence<T>::set(int index, const T &item) {
@@ -250,6 +246,18 @@ namespace sem3 {
     }
 
     template <typename T>
+    SharedPtr<SmartSequence<T>> SmartArraySequence<T>::concat(const SmartSequence<T> &other) const {
+        auto result = new SmartArraySequence<T>(size + other.getSize());
+        for (int i = 0; i < size; ++i) {
+            result->set(i, get(i));
+        }
+        for (int i = 0; i < other.getSize(); ++i) {
+            result->set(size + i, other.get(i));
+        }
+        return SharedPtr<SmartSequence<T>>(result);
+    }
+
+    template <typename T>
     void SmartArraySequence<T>::resize(int new_size) {
         resize(new_size, T());
     }
@@ -289,8 +297,35 @@ namespace sem3 {
         autoShrink();
     }
 
+
     template <typename T>
-    bool SmartArraySequence<T>::empty() const {
-        return size == 0;
+    SharedPtr<SmartSequence<T>> SmartArraySequence<T>::map(T (*mapper)(const T &)) const {
+        auto result = new SmartArraySequence<T>(size);
+        for (int i = 0; i < size; ++i) {
+            result->set(i, mapper(get(i)));
+        }
+        return SharedPtr<SmartSequence<T>>(result);
     }
+
+    template <typename T>
+    SharedPtr<SmartSequence<T>> SmartArraySequence<T>::where(bool (*predicate)(const T &)) const {
+        auto result = new SmartArraySequence<T>();
+        for (int i = 0; i < size; ++i) {
+            if (predicate(get(i))) {
+                result->append(get(i));
+            }
+        }
+        return SharedPtr<SmartSequence<T>>(result);
+    }
+
+    template <typename T>
+    T SmartArraySequence<T>::reduce(T (*reducer)(const T &, const T &), const T &initialValue) const {
+        T result = initialValue;
+        for (int i = 0; i < size; ++i) {
+            result = reducer(result, get(i));
+        }
+        return result;
+    }
+
+
 } // namespace sem3
