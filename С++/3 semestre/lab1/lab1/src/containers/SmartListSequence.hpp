@@ -23,7 +23,7 @@ namespace sem3 {
         explicit SmartListSequence(const SmartSequence<T> *sequence);
         explicit SmartListSequence(const Sequence<T> *sequence);
 
-        ~SmartListSequence() override = default;
+        ~SmartListSequence() = default;
 
         SmartListSequence(const SmartListSequence<T> &other);
         SmartListSequence(SmartListSequence<T> &&other) noexcept;
@@ -142,7 +142,7 @@ namespace sem3 {
 
     template <typename T>
     int SmartListSequence<T>::getSize() const {
-        return list? list->getSize() : 0;
+        return list ? list->getSize() : 0;
     }
 
     template <typename T>
@@ -185,7 +185,7 @@ namespace sem3 {
 
     template <typename T>
     void SmartListSequence<T>::clear() {
-        list.release();
+        list = nullptr;
     }
 
     template <typename T>

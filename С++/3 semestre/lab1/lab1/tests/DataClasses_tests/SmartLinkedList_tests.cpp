@@ -748,7 +748,7 @@ TEST(SmartLinkedList, RemoveLastMethodZeroSize) {
     auto list = make_shared<SmartLinkedList<int>>(0);
 
     // Act
-    
+
     // Assert
     EXPECT_THROW(list->removeLast(), std::out_of_range);
 }
@@ -974,9 +974,3 @@ TEST(SmartLinkedList, ConcatMethodWithSelfZeroSize) {
     // Assert
     EXPECT_EQ(list2.getSize(), 0);
 }
-
-
-
-
-
-

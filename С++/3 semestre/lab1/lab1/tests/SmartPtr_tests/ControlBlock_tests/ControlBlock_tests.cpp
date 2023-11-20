@@ -62,7 +62,7 @@ TEST(ControlBlockTests, CorrectDeleting) {
     EXPECT_EQ(block->get(), nullptr);
     EXPECT_THROW(block->decrement_ref_count_and_delete_if_0(), std::logic_error);
 
-    //delete
+    // delete
     block->decrement_weak_ref_count_and_delete_if_0();
 }
 
@@ -105,7 +105,7 @@ TEST(ControlBlockTests, DecrementWeakRefCount) {
 
     // act
     block->increment_weak_ref_count();
-    
+
     // assert
     EXPECT_EQ(block->get_ref_count(), 1);
     EXPECT_EQ(block->get_weak_ref_count(), 1);

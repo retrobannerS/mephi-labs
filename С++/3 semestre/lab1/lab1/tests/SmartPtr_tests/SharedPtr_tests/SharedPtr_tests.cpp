@@ -81,43 +81,43 @@ TEST(SharedPtrTests, CustomClassMove) {
 }
 
 TEST(SharedPtrTests, EmptyConstructor) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr;
 
-    //act
+    // act
 
-    //assert
+    // assert
     EXPECT_EQ(ptr.get(), nullptr);
     EXPECT_EQ(ptr.use_count(), 0);
 }
 
 TEST(SharedPtrTests, Constructor) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(new int(10));
 
-    //assert
+    // assert
     EXPECT_NE(ptr.get(), nullptr);
     EXPECT_EQ(*ptr, 10);
     EXPECT_EQ(ptr.use_count(), 1);
 }
 
 TEST(SharedPtrTests, ConstructorWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(nullptr);
 
-    //assert
+    // assert
     EXPECT_EQ(ptr.get(), nullptr);
     EXPECT_EQ(ptr.use_count(), 0);
 }
 
 TEST(SharedPtrTests, CopyConstructor) {
-    //arrange
+    // arrange
     SharedPtr<int> original(new int(10));
 
-    //act
+    // act
     SharedPtr<int> copy = original;
 
-    //assert
+    // assert
     EXPECT_NE(copy.get(), nullptr);
     EXPECT_EQ(*copy, 10);
     EXPECT_EQ(copy.use_count(), 2);
@@ -125,26 +125,26 @@ TEST(SharedPtrTests, CopyConstructor) {
 }
 
 TEST(SharedPtrTests, CopyConstructorWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int> original(nullptr);
 
-    //act
+    // act
     SharedPtr<int> copy = original;
 
-    //assert
+    // assert
     EXPECT_EQ(copy.get(), nullptr);
     EXPECT_EQ(copy.use_count(), 0);
     EXPECT_EQ(original.use_count(), 0);
 }
 
 TEST(SharedPtrTests, MoveConstructor) {
-    //arrange
+    // arrange
     SharedPtr<int> original(new int(10));
 
-    //act
+    // act
     SharedPtr<int> moved(std::move(original));
 
-    //assert
+    // assert
     EXPECT_NE(moved.get(), nullptr);
     EXPECT_EQ(*moved, 10);
     EXPECT_EQ(moved.use_count(), 1);
@@ -153,13 +153,13 @@ TEST(SharedPtrTests, MoveConstructor) {
 }
 
 TEST(SharedPtrTests, MoveConstructorWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int> original(nullptr);
 
-    //act
+    // act
     SharedPtr<int> moved(std::move(original));
 
-    //assert
+    // assert
     EXPECT_EQ(moved.get(), nullptr);
     EXPECT_EQ(moved.use_count(), 0);
     EXPECT_EQ(original.get(), nullptr);
@@ -167,27 +167,27 @@ TEST(SharedPtrTests, MoveConstructorWithNullptr) {
 }
 
 TEST(SharedPtrTests, DestructorDecreasesCount) {
-    //arrange
-    SharedPtr<int>* ptr = new SharedPtr<int>(new int(10));
+    // arrange
+    SharedPtr<int> *ptr = new SharedPtr<int>(new int(10));
     SharedPtr<int> ptr2 = *ptr;
     EXPECT_EQ(ptr2.use_count(), 2);
 
-    //act
+    // act
     delete ptr; // This should call the destructor
 
-    //assert
+    // assert
     EXPECT_EQ(ptr2.use_count(), 1);
 }
 
 TEST(SharedPtrTests, AssignmentOperator) {
-    //arrange
+    // arrange
     SharedPtr<int> original(new int(10));
     SharedPtr<int> copy;
 
-    //act
+    // act
     copy = original;
 
-    //assert
+    // assert
     EXPECT_NE(copy.get(), nullptr);
     EXPECT_EQ(*copy, 10);
     EXPECT_EQ(copy.use_count(), 2);
@@ -195,28 +195,28 @@ TEST(SharedPtrTests, AssignmentOperator) {
 }
 
 TEST(SharedPtrTests, AssignmentOperatorWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int> original(nullptr);
     SharedPtr<int> copy;
 
-    //act
+    // act
     copy = original;
 
-    //assert
+    // assert
     EXPECT_EQ(copy.get(), nullptr);
     EXPECT_EQ(copy.use_count(), 0);
     EXPECT_EQ(original.use_count(), 0);
 }
 
 TEST(SharedPtrTests, MoveAssignmentOperator) {
-    //arrange
+    // arrange
     SharedPtr<int> original(new int(10));
     SharedPtr<int> moved;
 
-    //act
+    // act
     moved = std::move(original);
 
-    //assert
+    // assert
     EXPECT_NE(moved.get(), nullptr);
     EXPECT_EQ(*moved, 10);
     EXPECT_EQ(moved.use_count(), 1);
@@ -225,14 +225,14 @@ TEST(SharedPtrTests, MoveAssignmentOperator) {
 }
 
 TEST(SharedPtrTests, MoveAssignmentOperatorWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int> original(nullptr);
     SharedPtr<int> moved;
 
-    //act
+    // act
     moved = std::move(original);
 
-    //assert
+    // assert
     EXPECT_EQ(moved.get(), nullptr);
     EXPECT_EQ(moved.use_count(), 0);
     EXPECT_EQ(original.get(), nullptr);
@@ -240,51 +240,51 @@ TEST(SharedPtrTests, MoveAssignmentOperatorWithNullptr) {
 }
 
 TEST(SharedPtrTests, ResetMethodWithObject) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(new int(10));
 
-    //act
+    // act
     ptr.reset(new int(20));
 
-    //assert
+    // assert
     EXPECT_NE(ptr.get(), nullptr);
     EXPECT_EQ(*ptr, 20);
     EXPECT_EQ(ptr.use_count(), 1);
 }
 
 TEST(SharedPtrTests, ResetMethodWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(new int(10));
 
-    //act
+    // act
     ptr.reset(nullptr);
 
-    //assert
+    // assert
     EXPECT_EQ(ptr.get(), nullptr);
     EXPECT_EQ(ptr.use_count(), 0);
 }
 
 TEST(SharedPtrTests, ResetMethodDecreasesCount) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr1(new int(10));
     SharedPtr<int> ptr2 = ptr1;
 
-    //act
+    // act
     ptr1.reset(new int(20));
 
-    //assert
+    // assert
     EXPECT_EQ(ptr2.use_count(), 1);
 }
 
 TEST(SharedPtrTests, SwapMethod) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr1(new int(10));
     SharedPtr<int> ptr2(new int(20));
 
-    //act
+    // act
     ptr1.swap(ptr2);
 
-    //assert
+    // assert
     EXPECT_NE(ptr1.get(), nullptr);
     EXPECT_EQ(*ptr1, 20);
     EXPECT_EQ(ptr1.use_count(), 1);
@@ -294,14 +294,14 @@ TEST(SharedPtrTests, SwapMethod) {
 }
 
 TEST(SharedPtrTests, SwapMethodWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr1(new int(10));
     SharedPtr<int> ptr2(nullptr);
 
-    //act
+    // act
     ptr1.swap(ptr2);
 
-    //assert
+    // assert
     EXPECT_EQ(ptr1.get(), nullptr);
     EXPECT_EQ(ptr1.use_count(), 0);
     EXPECT_NE(ptr2.get(), nullptr);
@@ -310,128 +310,128 @@ TEST(SharedPtrTests, SwapMethodWithNullptr) {
 }
 
 TEST(SharedPtrTests, GetMethod) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(new int(10));
 
-    //act
-    int* raw_ptr = ptr.get();
+    // act
+    int *raw_ptr = ptr.get();
 
-    //assert
+    // assert
     EXPECT_NE(raw_ptr, nullptr);
     EXPECT_EQ(*raw_ptr, 10);
 }
 
 TEST(SharedPtrTests, GetMethodWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(nullptr);
 
-    //act
-    int* raw_ptr = ptr.get();
+    // act
+    int *raw_ptr = ptr.get();
 
-    //assert
+    // assert
     EXPECT_EQ(raw_ptr, nullptr);
 }
 
 TEST(SharedPtrTests, ArrowOperator) {
-    //arrange
+    // arrange
     SharedPtr<std::vector<int>> ptr(new std::vector<int>{1, 2, 3});
 
-    //act
+    // act
     int size = ptr->size();
 
-    //assert
+    // assert
     EXPECT_EQ(size, 3);
 }
 
 TEST(SharedPtrTests, DereferenceOperator) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(new int(10));
 
-    //act
+    // act
     int value = *ptr;
 
-    //assert
+    // assert
     EXPECT_EQ(value, 10);
 }
 
 TEST(SharedPtrTests, UniqueMethod) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(new int(10));
 
-    //act and assert
+    // act and assert
     EXPECT_TRUE(ptr.unique());
 
-    //arrange
+    // arrange
     SharedPtr<int> ptr2 = ptr;
 
-    //act and assert
+    // act and assert
     EXPECT_FALSE(ptr.unique());
     EXPECT_FALSE(ptr2.unique());
 }
 
 TEST(SharedPtrTests, UseCountMethod) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(new int(10));
 
-    //act and assert
+    // act and assert
     EXPECT_EQ(ptr.use_count(), 1);
 
-    //arrange
+    // arrange
     SharedPtr<int> ptr2 = ptr;
 
-    //act and assert
+    // act and assert
     EXPECT_EQ(ptr.use_count(), 2);
     EXPECT_EQ(ptr2.use_count(), 2);
 }
 
 TEST(SharedPtrTests, UniqueMethodWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(nullptr);
 
-    //act and assert
+    // act and assert
     EXPECT_FALSE(ptr.unique());
 
-    //arrange
+    // arrange
     SharedPtr<int> ptr2 = ptr;
 
-    //act and assert
+    // act and assert
     EXPECT_FALSE(ptr.unique());
     EXPECT_FALSE(ptr2.unique());
 }
 
 TEST(SharedPtrTests, UseCountMethodWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(nullptr);
 
-    //act and assert
+    // act and assert
     EXPECT_EQ(ptr.use_count(), 0);
 
-    //arrange
+    // arrange
     SharedPtr<int> ptr2 = ptr;
 
-    //act and assert
+    // act and assert
     EXPECT_EQ(ptr.use_count(), 0);
     EXPECT_EQ(ptr2.use_count(), 0);
 }
 
 TEST(SharedPtrTests, BoolOperator) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr(new int(10));
     SharedPtr<int> ptr2(nullptr);
 
-    //act and assert
+    // act and assert
     EXPECT_TRUE(ptr);
-    EXPECT_FALSE(ptr2);    
+    EXPECT_FALSE(ptr2);
 }
 
 TEST(SharedPtrTests, ComparisonOperators) {
-    //arrange
+    // arrange
     SharedPtr<std::vector<int>> ptr1(new std::vector<int>{1, 2, 3});
     SharedPtr<std::vector<int>> ptr2 = ptr1;
     SharedPtr<std::vector<int>> ptr3(new std::vector<int>{4, 5, 6});
-    std::vector<int>* raw_ptr = ptr1.get();
+    std::vector<int> *raw_ptr = ptr1.get();
 
-    //act and assert
+    // act and assert
     EXPECT_EQ(ptr1, ptr2);
     EXPECT_NE(ptr1, ptr3);
     EXPECT_EQ(ptr1, raw_ptr);
@@ -439,24 +439,24 @@ TEST(SharedPtrTests, ComparisonOperators) {
     EXPECT_NE(ptr1, nullptr);
     EXPECT_NE(ptr3, nullptr);
 
-    //arrange
+    // arrange
     ptr1.reset();
 
-    //act and assert
+    // act and assert
     EXPECT_NE(ptr1, ptr2);
     EXPECT_NE(ptr1, raw_ptr);
     EXPECT_EQ(ptr1, nullptr);
 }
 
 TEST(SharedPtrTests, SwapFunction) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr1(new int(10));
     SharedPtr<int> ptr2(new int(20));
 
-    //act
+    // act
     swap(ptr1, ptr2);
 
-    //assert
+    // assert
     EXPECT_NE(ptr1.get(), nullptr);
     EXPECT_EQ(*ptr1, 20);
     EXPECT_EQ(ptr1.use_count(), 1);
@@ -466,14 +466,14 @@ TEST(SharedPtrTests, SwapFunction) {
 }
 
 TEST(SharedPtrTests, SwapFunctionWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int> ptr1(new int(10));
     SharedPtr<int> ptr2(nullptr);
 
-    //act
+    // act
     swap(ptr1, ptr2);
 
-    //assert
+    // assert
     EXPECT_EQ(ptr1.get(), nullptr);
     EXPECT_EQ(ptr1.use_count(), 0);
     EXPECT_NE(ptr2.get(), nullptr);

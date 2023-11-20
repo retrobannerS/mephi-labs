@@ -3,7 +3,6 @@
 
 using namespace sem3;
 
-
 TEST(SharedPtrTests, MakeSharedForArray) {
     // arrange & act
     auto ptr = make_shared<int[]>(10);
@@ -13,70 +12,69 @@ TEST(SharedPtrTests, MakeSharedForArray) {
     EXPECT_EQ(ptr.use_count(), 1);
 }
 
-
 TEST(SharedPtrArrayTests, EmptyConstructor) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr;
 
-    //act
+    // act
 
-    //assert
+    // assert
     EXPECT_EQ(ptr.get(), nullptr);
     EXPECT_EQ(ptr.use_count(), 0);
 }
 
 TEST(SharedPtrArrayTests, Constructor) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(new int[10]);
 
-    //assert
+    // assert
     EXPECT_NE(ptr.get(), nullptr);
     EXPECT_EQ(ptr.use_count(), 1);
 }
 
 TEST(SharedPtrArrayTests, ConstructorWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(nullptr);
 
-    //assert
+    // assert
     EXPECT_EQ(ptr.get(), nullptr);
     EXPECT_EQ(ptr.use_count(), 0);
 }
 
 TEST(SharedPtrArrayTests, CopyConstructor) {
-    //arrange
+    // arrange
     SharedPtr<int[]> original(new int[10]);
 
-    //act
+    // act
     SharedPtr<int[]> copy = original;
 
-    //assert
+    // assert
     EXPECT_NE(copy.get(), nullptr);
     EXPECT_EQ(copy.use_count(), 2);
     EXPECT_EQ(original.use_count(), 2);
 }
 
 TEST(SharedPtrArrayTests, CopyConstructorWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int[]> original(nullptr);
 
-    //act
+    // act
     SharedPtr<int[]> copy = original;
 
-    //assert
+    // assert
     EXPECT_EQ(copy.get(), nullptr);
     EXPECT_EQ(copy.use_count(), 0);
     EXPECT_EQ(original.use_count(), 0);
 }
 
 TEST(SharedPtrArrayTests, MoveConstructor) {
-    //arrange
+    // arrange
     SharedPtr<int[]> original(new int[10]);
 
-    //act
+    // act
     SharedPtr<int[]> moved(std::move(original));
 
-    //assert
+    // assert
     EXPECT_NE(moved.get(), nullptr);
     EXPECT_EQ(moved.use_count(), 1);
     EXPECT_EQ(original.get(), nullptr);
@@ -84,13 +82,13 @@ TEST(SharedPtrArrayTests, MoveConstructor) {
 }
 
 TEST(SharedPtrArrayTests, MoveConstructorWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int[]> original(nullptr);
 
-    //act
+    // act
     SharedPtr<int[]> moved(std::move(original));
 
-    //assert
+    // assert
     EXPECT_EQ(moved.get(), nullptr);
     EXPECT_EQ(moved.use_count(), 0);
     EXPECT_EQ(original.get(), nullptr);
@@ -98,27 +96,27 @@ TEST(SharedPtrArrayTests, MoveConstructorWithNullptr) {
 }
 
 TEST(SharedPtrArrayTests, DestructorDecreasesCount) {
-    //arrange
-    SharedPtr<int[]>* ptr = new SharedPtr<int[]>(new int[10]);
+    // arrange
+    SharedPtr<int[]> *ptr = new SharedPtr<int[]>(new int[10]);
     SharedPtr<int[]> ptr2 = *ptr;
     EXPECT_EQ(ptr2.use_count(), 2);
 
-    //act
+    // act
     delete ptr; // This should call the destructor
 
-    //assert
+    // assert
     EXPECT_EQ(ptr2.use_count(), 1);
 }
 
 TEST(SharedPtrArrayTests, AssignmentOperator) {
-    //arrange
+    // arrange
     SharedPtr<int[]> original(new int[10]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     SharedPtr<int[]> copy;
 
-    //act
+    // act
     copy = original;
 
-    //assert
+    // assert
     EXPECT_NE(copy.get(), nullptr);
     EXPECT_EQ(copy.use_count(), 2);
     EXPECT_EQ(original.use_count(), 2);
@@ -126,28 +124,28 @@ TEST(SharedPtrArrayTests, AssignmentOperator) {
 }
 
 TEST(SharedPtrArrayTests, AssignmentOperatorWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int[]> original(nullptr);
     SharedPtr<int[]> copy;
 
-    //act
+    // act
     copy = original;
 
-    //assert
+    // assert
     EXPECT_EQ(copy.get(), nullptr);
     EXPECT_EQ(copy.use_count(), 0);
     EXPECT_EQ(original.use_count(), 0);
 }
 
 TEST(SharedPtrArrayTests, MoveAssignmentOperator) {
-    //arrange
+    // arrange
     SharedPtr<int[]> original(new int[10]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     SharedPtr<int[]> moved;
 
-    //act
+    // act
     moved = std::move(original);
 
-    //assert
+    // assert
     EXPECT_NE(moved.get(), nullptr);
     EXPECT_EQ(moved.use_count(), 1);
     EXPECT_EQ(moved[5], 6);
@@ -156,14 +154,14 @@ TEST(SharedPtrArrayTests, MoveAssignmentOperator) {
 }
 
 TEST(SharedPtrArrayTests, MoveAssignmentOperatorWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int[]> original(nullptr);
     SharedPtr<int[]> moved;
 
-    //act
+    // act
     moved = std::move(original);
 
-    //assert
+    // assert
     EXPECT_EQ(moved.get(), nullptr);
     EXPECT_EQ(moved.use_count(), 0);
     EXPECT_EQ(original.get(), nullptr);
@@ -171,51 +169,51 @@ TEST(SharedPtrArrayTests, MoveAssignmentOperatorWithNullptr) {
 }
 
 TEST(SharedPtrArrayTests, ResetMethodWithObject) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(new int[10]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 
-    //act
+    // act
     ptr.reset(new int[5]{11, 12, 13, 14, 15});
 
-    //assert
+    // assert
     EXPECT_NE(ptr.get(), nullptr);
     EXPECT_EQ(ptr.use_count(), 1);
     EXPECT_EQ(ptr[0], 11);
 }
 
 TEST(SharedPtrArrayTests, ResetMethodWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(new int[10]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 
-    //act
+    // act
     ptr.reset(nullptr);
 
-    //assert
+    // assert
     EXPECT_EQ(ptr.get(), nullptr);
     EXPECT_EQ(ptr.use_count(), 0);
 }
 
 TEST(SharedPtrArrayTests, ResetMethodDecreasesCount) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr1(new int[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
     SharedPtr<int[]> ptr2 = ptr1;
 
-    //act
+    // act
     ptr1.reset(new int[10]{10, 11, 12, 13, 14, 15, 16, 17, 18, 19});
 
-    //assert
+    // assert
     EXPECT_EQ(ptr2.use_count(), 1);
 }
 
 TEST(SharedPtrArrayTests, SwapMethod) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr1(new int[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
     SharedPtr<int[]> ptr2(new int[10]{10, 11, 12, 13, 14, 15, 16, 17, 18, 19});
 
-    //act
+    // act
     ptr1.swap(ptr2);
 
-    //assert
+    // assert
     EXPECT_NE(ptr1.get(), nullptr);
     EXPECT_EQ(ptr1[3], 13);
     EXPECT_EQ(ptr1.use_count(), 1);
@@ -225,14 +223,14 @@ TEST(SharedPtrArrayTests, SwapMethod) {
 }
 
 TEST(SharedPtrArrayTests, SwapMethodWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr1(new int[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
     SharedPtr<int[]> ptr2(nullptr);
 
-    //act
+    // act
     ptr1.swap(ptr2);
 
-    //assert
+    // assert
     EXPECT_EQ(ptr1.get(), nullptr);
     EXPECT_EQ(ptr1.use_count(), 0);
     EXPECT_NE(ptr2.get(), nullptr);
@@ -241,106 +239,106 @@ TEST(SharedPtrArrayTests, SwapMethodWithNullptr) {
 }
 
 TEST(SharedPtrArrayTests, GetMethod) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(new int[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-    //act
-    int* raw_ptr = ptr.get();
+    // act
+    int *raw_ptr = ptr.get();
 
-    //assert
+    // assert
     EXPECT_NE(raw_ptr, nullptr);
     EXPECT_EQ(raw_ptr[3], 3);
 }
 
 TEST(SharedPtrArrayTests, GetMethodWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(nullptr);
 
-    //act
-    int* raw_ptr = ptr.get();
+    // act
+    int *raw_ptr = ptr.get();
 
-    //assert
+    // assert
     EXPECT_EQ(raw_ptr, nullptr);
 }
 
 TEST(SharedPtrArrayTests, UniqueMethod) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(new int[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-    //act and assert
+    // act and assert
     EXPECT_TRUE(ptr.unique());
 
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr2 = ptr;
 
-    //act and assert
+    // act and assert
     EXPECT_FALSE(ptr.unique());
     EXPECT_FALSE(ptr2.unique());
 }
 
 TEST(SharedPtrArrayTests, UseCountMethod) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(new int[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-    //act and assert
+    // act and assert
     EXPECT_EQ(ptr.use_count(), 1);
 
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr2 = ptr;
 
-    //act and assert
+    // act and assert
     EXPECT_EQ(ptr.use_count(), 2);
     EXPECT_EQ(ptr2.use_count(), 2);
 }
 
 TEST(SharedPtrArrayTests, UniqueMethodWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(nullptr);
 
-    //act and assert
+    // act and assert
     EXPECT_FALSE(ptr.unique());
 
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr2 = ptr;
 
-    //act and assert
+    // act and assert
     EXPECT_FALSE(ptr.unique());
     EXPECT_FALSE(ptr2.unique());
 }
 
 TEST(SharedPtrArrayTests, UseCountMethodWithNullptr) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(nullptr);
 
-    //act and assert
+    // act and assert
     EXPECT_EQ(ptr.use_count(), 0);
 
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr2 = ptr;
 
-    //act and assert
+    // act and assert
     EXPECT_EQ(ptr.use_count(), 0);
     EXPECT_EQ(ptr2.use_count(), 0);
 }
 
 TEST(SharedPtrArrayTests, BoolOperator) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(new int[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
     SharedPtr<int[]> ptr2(nullptr);
 
-    //act and assert
+    // act and assert
     EXPECT_TRUE(ptr);
-    EXPECT_FALSE(ptr2);    
+    EXPECT_FALSE(ptr2);
 }
 
 TEST(SharedPtrArrayTests, ComparisonOperators) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr1(new int[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
     SharedPtr<int[]> ptr2 = ptr1;
     SharedPtr<int[]> ptr3(new int[10]{10, 11, 12, 13, 14, 15, 16, 17, 18, 19});
-    int* raw_ptr = ptr1.get();
+    int *raw_ptr = ptr1.get();
 
-    //act and assert
+    // act and assert
     EXPECT_EQ(ptr1, ptr2);
     EXPECT_NE(ptr1, ptr3);
     EXPECT_EQ(ptr1, raw_ptr);
@@ -348,20 +346,20 @@ TEST(SharedPtrArrayTests, ComparisonOperators) {
     EXPECT_NE(ptr1, nullptr);
     EXPECT_NE(ptr3, nullptr);
 
-    //arrange
+    // arrange
     ptr1.reset();
 
-    //act and assert
+    // act and assert
     EXPECT_EQ(ptr1, nullptr);
     EXPECT_NE(ptr2, nullptr);
     EXPECT_NE(ptr3, nullptr);
 }
 
 TEST(SharedPtrArrayTests, ArraySubscriptOperator) {
-    //arrange
+    // arrange
     SharedPtr<int[]> ptr(new int[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-    //act and assert
+    // act and assert
     for (int i = 0; i < 10; ++i) {
         EXPECT_EQ(ptr[i], i);
     }

@@ -1,6 +1,6 @@
-#include "gtest/gtest.h"
 #include "smart_pointers/SharedPtr.hpp"
 #include "smart_pointers/WeakPtr.hpp"
+#include "gtest/gtest.h"
 
 using namespace sem3;
 

@@ -295,7 +295,7 @@ namespace sem3 {
             removeLast();
         } else {
             SharedPtr<Node> current;
-            if(index <= size/2) {
+            if (index <= size / 2) {
                 current = head;
                 for (int i = 0; i < index; i++) {
                     current = current->next;
@@ -325,7 +325,6 @@ namespace sem3 {
         head->prev = nullptr;
         size--;
     }
-    
 
     template <typename T>
     void SmartLinkedList<T>::removeLast() {
@@ -374,6 +373,5 @@ namespace sem3 {
         }
         return result;
     }
-
 
 } // namespace sem3

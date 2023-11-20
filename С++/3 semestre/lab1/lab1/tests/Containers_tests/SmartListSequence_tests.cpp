@@ -5,6 +5,14 @@
 
 using namespace sem3;
 
+SharedPtr<SmartListSequence<std::string>> testListSequence() {
+    auto sequence = make_shared<SmartListSequence<std::string>>();
+    for (int i = 0; i < 10; i++) {
+        sequence->append("TEST" + std::to_string(i));
+    }
+    return sequence;
+}
+
 TEST(SmartListSequence, DefaultConstructor) {
     // Arrange
     sem3::SmartListSequence<int> list;
@@ -188,9 +196,10 @@ TEST(SmartListSequence, ConstructorWithZeroListSequence) {
 TEST(SmartListSequence, ConstructorWithSmartSequence) {
     // Arrange
     SmartSequence<int> *smartSequence = new SmartArraySequence<int>(5, 5);
+    SharedPtr<SmartSequence<int>> smartSequencePtr(smartSequence);
 
     // Act
-    SmartListSequence<int> list(smartSequence);
+    SmartListSequence<int> list(smartSequencePtr.get());
 
     // Assert
     EXPECT_EQ(list.getSize(), 5);
@@ -202,9 +211,10 @@ TEST(SmartListSequence, ConstructorWithSmartSequence) {
 TEST(SmartListSequence, ConstructorWithZeroSmartSequence) {
     // Arrange
     SmartSequence<int> *smartSequence = new SmartArraySequence<int>(0, 5);
+    SharedPtr<SmartSequence<int>> smartSequencePtr(smartSequence);
 
     // Act
-    SmartListSequence<int> list(smartSequence);
+    SmartListSequence<int> list(smartSequencePtr.get());
 
     // Assert
     EXPECT_EQ(list.getSize(), 0);
@@ -222,6 +232,8 @@ TEST(SmartListSequence, ConstructorWithSequence) {
     for (int i = 0; i < list.getSize(); i++) {
         EXPECT_EQ(list.get(i), 5);
     }
+
+    delete sequence;
 }
 
 TEST(SmartListSequence, ConstructorWithZeroSequence) {
@@ -233,6 +245,8 @@ TEST(SmartListSequence, ConstructorWithZeroSequence) {
 
     // Assert
     EXPECT_EQ(list.getSize(), 0);
+
+    delete sequence;
 }
 
 TEST(SmartListSequence, CopyConstructor) {
@@ -740,3 +754,434 @@ TEST(SmartListSequence, ClearMethod) {
     EXPECT_EQ(list.getSize(), 0);
 }
 
+TEST(SmartListSequence, OperatorSquareBrackets) {
+    // Arrange
+    auto sequence = testListSequence();
+    int index = 5;
+
+    // Act
+    (*sequence)[index + 1] = "TEST";
+
+    // Assert
+    EXPECT_EQ((*sequence)[index], "TEST" + std::to_string(index));
+    EXPECT_EQ((*sequence)[index + 1], "TEST");
+}
+
+TEST(SmartListSequence, OperatorSquareBracketsWithNegativeIndex) {
+    // Arrange
+    auto sequence = testListSequence();
+    int index = -5;
+
+    // Act
+
+    // Assert
+    EXPECT_THROW((*sequence)[index], std::out_of_range);
+}
+
+TEST(SmartListSequence, OperatorSquareBracketsWithIndexGreaterThanSize) {
+    // Arrange
+    auto sequence = testListSequence();
+    int index = sequence->getSize() + 5;
+
+    // Act
+
+    // Assert
+    EXPECT_THROW((*sequence)[index], std::out_of_range);
+}
+
+TEST(SmartListSequence, OperatorSquareBracketsWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartListSequence<std::string>>(0);
+    int index = 0;
+
+    // Act
+
+    // Assert
+    EXPECT_THROW((*sequence)[index], std::out_of_range);
+}
+
+TEST(SmartListSequence, OperatorPlus) {
+    // Arrange
+    auto sequence = testListSequence();
+    auto sequence2 = testListSequence();
+
+    // Act
+    auto new_sequence = *sequence + *sequence2;
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize() + sequence2->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i));
+    }
+    for (int i = sequence->getSize(); i < new_sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence2->get(i - sequence->getSize()));
+    }
+}
+
+TEST(SmartListSequence, OperatorPlusWithZeroSize) {
+    // Arrange
+    auto sequence = testListSequence();
+    auto sequence2 = make_shared<SmartListSequence<std::string>>(0);
+
+    // Act
+    auto new_sequence = *sequence + *sequence2;
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize() + sequence2->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i));
+    }
+    for (int i = sequence->getSize(); i < new_sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence2->get(i - sequence->getSize()));
+    }
+}
+
+TEST(SmartListSequence, OperatorPlusWithSelf) {
+    // Arrange
+    auto sequence = testListSequence();
+
+    // Act
+    auto new_sequence = *sequence + *sequence;
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize() + sequence->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i));
+    }
+    for (int i = sequence->getSize(); i < new_sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i - sequence->getSize()));
+    }
+}
+
+TEST(SmartListSequence, OperatorPlusWithZeroSelf) {
+    // Arrange
+    auto sequence = make_shared<SmartListSequence<std::string>>(0);
+
+    // Act
+    auto new_sequence = *sequence + *sequence;
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize() + sequence->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i));
+    }
+    for (int i = sequence->getSize(); i < new_sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i - sequence->getSize()));
+    }
+}
+
+TEST(SmartListSequence, ConcatMethod) {
+    // Arrange
+    auto sequence = testListSequence();
+    auto sequence2 = testListSequence();
+
+    // Act
+    auto new_sequence = sequence->concat(*sequence2);
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize() + sequence2->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i));
+    }
+    for (int i = sequence->getSize(); i < new_sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence2->get(i - sequence->getSize()));
+    }
+}
+
+TEST(SmartListSequence, ConcatMethodWithZeroSize) {
+    // Arrange
+    auto sequence = testListSequence();
+    auto sequence2 = make_shared<SmartListSequence<std::string>>(0);
+
+    // Act
+    auto new_sequence = sequence->concat(*sequence2);
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize() + sequence2->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i));
+    }
+    for (int i = sequence->getSize(); i < new_sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence2->get(i - sequence->getSize()));
+    }
+}
+
+TEST(SmartListSequence, ConcatMethodWithSelf) {
+    // Arrange
+    auto sequence = testListSequence();
+
+    // Act
+    auto new_sequence = sequence->concat(*sequence);
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize() + sequence->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i));
+    }
+    for (int i = sequence->getSize(); i < new_sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i - sequence->getSize()));
+    }
+}
+
+TEST(SmartListSequence, ConcatMethodWithZeroSelf) {
+    // Arrange
+    auto sequence = make_shared<SmartListSequence<std::string>>(0);
+
+    // Act
+    auto new_sequence = sequence->concat(*sequence);
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize() + sequence->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i));
+    }
+    for (int i = sequence->getSize(); i < new_sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i - sequence->getSize()));
+    }
+}
+
+TEST(SmartListSequence, FindMethod) {
+    // Arrange
+    auto sequence = testListSequence();
+    int index = 5;
+
+    // Act
+    int findIndex = sequence->find("TEST" + std::to_string(index));
+
+    // Assert
+    EXPECT_EQ(findIndex, index);
+}
+
+TEST(SmartListSequence, FindMethodWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartListSequence<std::string>>(0);
+    int index = 5;
+
+    // Act
+
+    // Assert
+    EXPECT_THROW(sequence->find("TEST" + std::to_string(index)), std::invalid_argument);
+}
+
+TEST(SmartListSequence, FindMethodWithItemNotFound) {
+    // Arrange
+    auto sequence = testListSequence();
+    std::string item = "TEST";
+
+    // Act
+
+    // Assert
+    EXPECT_THROW(sequence->find(item), std::invalid_argument);
+}
+
+TEST(SmartListSequence, MapMethod) {
+    // Arrange
+    auto sequence = testListSequence();
+
+    // Act
+    auto new_sequence = sequence->map([](const std::string &item) { return item + "TEST"; });
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i) + "TEST");
+    }
+}
+
+TEST(SmartListSequence, MapMethodWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartListSequence<std::string>>(0);
+
+    // Act
+    auto new_sequence = sequence->map([](const std::string &item) { return item + "TEST"; });
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize());
+}
+
+TEST(SmartListSequence, WhereMethod) {
+    // Arrange
+    auto sequence = testListSequence();
+
+    // Act
+    auto new_sequence = sequence->where([](const std::string &item) { return item == "TEST5"; });
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), 1);
+    EXPECT_EQ(new_sequence->get(0), "TEST5");
+}
+
+TEST(SmartListSequence, WhereMethodWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartListSequence<std::string>>(0);
+
+    // Act
+    auto new_sequence = sequence->where([](const std::string &item) { return item == "TEST5"; });
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), 0);
+}
+
+TEST(SmartListSequence, ReduceMethod) {
+    // Arrange
+    auto sequence = testListSequence();
+
+    // Act
+    auto result = sequence->reduce(
+        [](const std::string &accumulator, const std::string &item) { return accumulator + item; }, "");
+
+    // Assert
+    EXPECT_EQ(result, "TEST0TEST1TEST2TEST3TEST4TEST5TEST6TEST7TEST8TEST9");
+}
+
+TEST(SmartListSequence, ReduceMethodWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartListSequence<std::string>>(0);
+
+    // Act
+    auto result = sequence->reduce(
+        [](const std::string &accumulator, const std::string &item) { return accumulator + item; }, "");
+
+    // Assert
+    EXPECT_EQ(result, "");
+}
+
+TEST(SmartListSequence, ReduceMethodWithInitialValue) {
+    // Arrange
+    auto sequence = testListSequence();
+
+    // Act
+    auto result = sequence->reduce(
+        [](const std::string &accumulator, const std::string &item) { return accumulator + item; }, "TEST");
+
+    // Assert
+    EXPECT_EQ(result, "TESTTEST0TEST1TEST2TEST3TEST4TEST5TEST6TEST7TEST8TEST9");
+}
+
+TEST(SmartListSequence, TryGetMethod) {
+    // Arrange
+    auto sequence = testListSequence();
+    int index = 5;
+
+    // Act
+    auto item = sequence->tryGet(index);
+
+    // Assert
+    EXPECT_EQ(item.Value(), "TEST" + std::to_string(index));
+}
+
+TEST(SmartListSequence, TryGetMethodWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartListSequence<std::string>>(0);
+    int index = 5;
+
+    // Act
+    auto item = sequence->tryGet(index);
+
+    // Assert
+    EXPECT_FALSE(item.HasValue());
+}
+
+TEST(SmartListSequence, TryGetMethodWithIndexOutOfBounds) {
+    // Arrange
+    auto sequence = testListSequence();
+    int index = sequence->getSize() + 5;
+
+    // Act
+    auto item = sequence->tryGet(index);
+
+    // Assert
+    EXPECT_FALSE(item.HasValue());
+}
+
+TEST(SmartListSequence, TryGetMethodWithNegativeIndex) {
+    // Arrange
+    auto sequence = testListSequence();
+    int index = -5;
+
+    // Act
+    auto item = sequence->tryGet(index);
+
+    // Assert
+    EXPECT_FALSE(item.HasValue());
+}
+
+TEST(SmartListSequence, TryGetFirstMethod) {
+    // Arrange
+    auto sequence = testListSequence();
+
+    // Act
+    auto item = sequence->tryGetFirst();
+
+    // Assert
+    EXPECT_EQ(item.Value(), "TEST0");
+}
+
+TEST(SmartListSequence, TryGetFirstMethodWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartListSequence<std::string>>(0);
+
+    // Act
+    auto item = sequence->tryGetFirst();
+
+    // Assert
+    EXPECT_FALSE(item.HasValue());
+}
+
+TEST(SmartListSequence, TryGetLastMethod) {
+    // Arrange
+    auto sequence = testListSequence();
+
+    // Act
+    auto item = sequence->tryGetLast();
+
+    // Assert
+    EXPECT_EQ(item.Value(), "TEST9");
+}
+
+TEST(SmartListSequence, TryGetLastMethodWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartListSequence<std::string>>(0);
+
+    // Act
+    auto item = sequence->tryGetLast();
+
+    // Assert
+    EXPECT_FALSE(item.HasValue());
+}
+
+TEST(SmartListSequence, TryFindMethod) {
+    // Arrange
+    auto sequence = testListSequence();
+    int index = 5;
+
+    // Act
+    auto item = sequence->tryFind("TEST" + std::to_string(index));
+
+    // Assert
+    EXPECT_EQ(item.Value(), index);
+}
+
+TEST(SmartListSequence, TryFindMethodWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartListSequence<std::string>>(0);
+    int index = 5;
+
+    // Act
+    auto item = sequence->tryFind("TEST" + std::to_string(index));
+
+    // Assert
+    EXPECT_FALSE(item.HasValue());
+}
+
+TEST(SmartListSequence, TryFindMethodWithItemNotFound) {
+    // Arrange
+    auto sequence = testListSequence();
+    std::string item = "TEST";
+
+    // Act
+    auto findIndex = sequence->tryFind(item);
+
+    // Assert
+    EXPECT_FALSE(findIndex.HasValue());
+}
