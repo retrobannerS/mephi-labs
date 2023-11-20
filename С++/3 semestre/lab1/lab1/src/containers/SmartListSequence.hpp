@@ -23,6 +23,8 @@ namespace sem3 {
         explicit SmartListSequence(const SmartSequence<T> *sequence);
         explicit SmartListSequence(const Sequence<T> *sequence);
 
+        ~SmartListSequence() override = default;
+
         SmartListSequence(const SmartListSequence<T> &other);
         SmartListSequence(SmartListSequence<T> &&other) noexcept;
 
