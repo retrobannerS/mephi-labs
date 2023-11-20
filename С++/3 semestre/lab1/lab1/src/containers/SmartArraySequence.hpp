@@ -26,6 +26,8 @@ namespace sem3 {
         explicit SmartArraySequence(const SmartSequence<T> *sequence);
         explicit SmartArraySequence(const Sequence<T> *sequence);
 
+        ~SmartArraySequence() override = default;
+
         SmartArraySequence(const SmartArraySequence<T> &other);
         SmartArraySequence(SmartArraySequence<T> &&other) noexcept;
 

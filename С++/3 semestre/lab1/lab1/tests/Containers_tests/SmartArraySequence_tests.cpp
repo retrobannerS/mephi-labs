@@ -932,7 +932,7 @@ TEST(SmartArraySequence, ConcatMethodWithSelf) {
     auto sequence = testSequence();
 
     // Act
-    auto new_sequence = sequence->concat(*sequence);
+    SharedPtr<SmartSequence<std::string>> new_sequence = sequence->concat(*sequence);
 
     // Assert
     EXPECT_EQ(new_sequence->getSize(), sequence->getSize() + sequence->getSize());

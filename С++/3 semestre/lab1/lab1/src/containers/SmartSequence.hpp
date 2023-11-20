@@ -10,7 +10,7 @@ namespace sem3 {
     template <typename T>
     class SmartSequence {
     public:
-        ~SmartSequence() = default;
+        virtual ~SmartSequence() = default;
 
         T getFirst() const;
         T getLast() const;
