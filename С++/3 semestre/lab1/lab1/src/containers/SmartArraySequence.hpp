@@ -8,9 +8,6 @@
 
 namespace sem3 {
     template <typename T>
-    class SmartListSequence;
-
-    template <typename T>
     class SmartArraySequence : public SmartSequence<T> {
     private:
         UniquePtr<SmartDynamicArray<T>> array;
@@ -55,7 +52,7 @@ namespace sem3 {
         void reserve(int new_size);
 
         void clear() override;
-        
+
         SharedPtr<SmartSequence<T>> map(T (*mapper)(const T &)) const override;
         SharedPtr<SmartSequence<T>> where(bool (*predicate)(const T &)) const override;
         T reduce(T (*reducer)(const T &, const T &), const T &initialValue) const override;
@@ -83,7 +80,8 @@ namespace sem3 {
     SmartArraySequence<T>::SmartArraySequence() : array(make_unique<SmartDynamicArray<T>>(3)), size(0) {}
 
     template <typename T>
-    SmartArraySequence<T>::SmartArraySequence(int size) : array(make_unique<SmartDynamicArray<T>>(2 * size)), size(size) {}
+    SmartArraySequence<T>::SmartArraySequence(int size)
+        : array(make_unique<SmartDynamicArray<T>>(2 * size)), size(size) {}
 
     template <typename T>
     SmartArraySequence<T>::SmartArraySequence(int size, const T &item)
@@ -297,7 +295,6 @@ namespace sem3 {
         autoShrink();
     }
 
-
     template <typename T>
     SharedPtr<SmartSequence<T>> SmartArraySequence<T>::map(T (*mapper)(const T &)) const {
         auto result = new SmartArraySequence<T>(size);
@@ -326,6 +323,5 @@ namespace sem3 {
         }
         return result;
     }
-
 
 } // namespace sem3

@@ -38,7 +38,7 @@ add_executable(lab1_tests
                 tests/DataClasses_tests/SmartDynamicArray_tests.cpp
                 tests/DataClasses_tests/SmartLinkedList_tests.cpp
                 tests/Containers_tests/SmartArraySequence_tests.cpp
-                #tests/Containers_tests/SmartListSequence_tests.cpp
+                tests/Containers_tests/SmartListSequence_tests.cpp
                 )
 target_include_directories(lab1_tests PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${SRC}" "${TESTS}")
 target_link_libraries(lab1_tests gtest gtest_main ${LAB2_LIBRARY} ${LAB3_LIBRARY})
