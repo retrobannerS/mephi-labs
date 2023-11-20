@@ -223,7 +223,167 @@ TEST(SmartArraySequence, ConstructorWithZeroArraySequence) {
     EXPECT_EQ(sequence.getSize(), array->GetSize());
 }
 
+TEST(SmartArraySequence, ConstructorWithSmartSequence) {
+    // Arrange
+    auto test_sequence = make_shared<SmartArraySequence<int>>(10);
+    SmartSequence<int> *sequence = test_sequence.get();
 
+    // Act
+    SmartArraySequence<int> new_sequence(sequence);
+
+    // Assert
+    EXPECT_EQ(new_sequence.getSize(), sequence->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence.get(i), sequence->get(i));
+    }
+}
+
+TEST(SmartArraySequence, ConstructorWithZeroSmartSequence) {
+    // Arrange
+    auto test_sequence = make_shared<SmartArraySequence<int>>(0);
+    SmartSequence<int> *sequence = test_sequence.get();
+
+    // Act
+    SmartArraySequence<int> new_sequence(sequence);
+
+    // Assert
+    EXPECT_EQ(new_sequence.getSize(), sequence->getSize());
+}
+
+TEST(SmartArraySequence, ConstructorWithSequence) {
+    // Arrange
+    auto test_sequence = make_shared<ArraySequence<int>>(10);
+    Sequence<int> *sequence = test_sequence.get();
+
+    // Act
+    SmartArraySequence<int> new_sequence(sequence);
+
+    // Assert
+    EXPECT_EQ(new_sequence.getSize(), sequence->GetSize());
+    for (int i = 0; i < sequence->GetSize(); i++) {
+        EXPECT_EQ(new_sequence.get(i), sequence->Get(i));
+    }
+}
+
+TEST(SmartArraySequence, ConstructorWithZeroSequence) {
+    // Arrange
+    auto test_sequence = make_shared<ArraySequence<int>>(0);
+    Sequence<int> *sequence = test_sequence.get();
+
+    // Act
+    SmartArraySequence<int> new_sequence(sequence);
+
+    // Assert
+    EXPECT_EQ(new_sequence.getSize(), sequence->GetSize());
+}
+
+TEST(SmartArraySequence, CopyConstructor) {
+    // Arrange
+    auto sequence = testSequence();
+
+    // Act
+    SmartArraySequence<std::string> new_sequence(*sequence);
+
+    // Assert
+    EXPECT_EQ(new_sequence.getSize(), sequence->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence.get(i), sequence->get(i));
+    }
+}
+
+TEST(SmartArraySequence, CopyConstructorWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartArraySequence<std::string>>(0);
+
+    // Act
+    SmartArraySequence<std::string> new_sequence(*sequence);
+
+    // Assert
+    EXPECT_EQ(new_sequence.getSize(), sequence->getSize());
+}
+
+TEST(SmartArraySequence, MoveConstructor) {
+    // Arrange
+    auto sequence = testSequence();
+
+    // Act
+    SmartArraySequence<std::string> new_sequence(std::move(*sequence));
+
+    // Assert
+    EXPECT_EQ(new_sequence.getSize(), 10);
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence.get(i), "TEST" + std::to_string(i));
+    }
+    EXPECT_EQ(sequence->getSize(), 0);
+}
+
+TEST(SmartArraySequence, MoveConstructorWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartArraySequence<std::string>>(0);
+
+    // Act
+    SmartArraySequence<std::string> new_sequence(std::move(*sequence));
+
+    // Assert
+    EXPECT_EQ(new_sequence.getSize(), 0);
+    EXPECT_EQ(sequence->getSize(), 0);
+}
+
+TEST(SmartArraySequence, AssignmentOperator) {
+    // Arrange
+    auto sequence = testSequence();
+    auto new_sequence = make_shared<SmartArraySequence<std::string>>(0);
+
+    // Act
+    *new_sequence = *sequence;
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize());
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), sequence->get(i));
+    }
+}
+
+TEST(SmartArraySequence, AssignmentOperatorWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartArraySequence<std::string>>(0);
+    auto new_sequence = make_shared<SmartArraySequence<std::string>>(10);
+
+    // Act
+    *new_sequence = *sequence;
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), sequence->getSize());
+}
+
+TEST(SmartArraySequence, MoveAssignmentOperator) {
+    // Arrange
+    auto sequence = testSequence();
+    auto new_sequence = make_shared<SmartArraySequence<std::string>>(0);
+
+    // Act
+    *new_sequence = std::move(*sequence);
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), 10);
+    for (int i = 0; i < sequence->getSize(); i++) {
+        EXPECT_EQ(new_sequence->get(i), "TEST" + std::to_string(i));
+    }
+    EXPECT_EQ(sequence->getSize(), 0);
+}
+
+TEST(SmartArraySequence, MoveAssignmentOperatorWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartArraySequence<std::string>>(0);
+    auto new_sequence = make_shared<SmartArraySequence<std::string>>(10);
+
+    // Act
+    *new_sequence = std::move(*sequence);
+
+    // Assert
+    EXPECT_EQ(new_sequence->getSize(), 0);
+    EXPECT_EQ(sequence->getSize(), 0);
+}
 
 TEST(SmartArraySequence, SetMethod) {
     // Arrange
@@ -237,6 +397,79 @@ TEST(SmartArraySequence, SetMethod) {
     // Assert
     EXPECT_EQ(sequence->get(index), item);
 }
+
+TEST(SmartArraySequence, SetMethodWithNegativeIndex) {
+    // Arrange
+    auto sequence = testSequence();
+    int index = -5;
+    std::string item = "TEST";
+
+    // Act
+
+    // Assert
+    EXPECT_THROW(sequence->set(index, item), std::out_of_range);
+}
+
+TEST(SmartArraySequence, SetMethodWithIndexGreaterThanSize) {
+    // Arrange
+    auto sequence = testSequence();
+    int index = sequence->getSize() + 5;
+    std::string item = "TEST";
+
+    // Act
+
+    // Assert
+    EXPECT_THROW(sequence->set(index, item), std::out_of_range);
+}
+
+TEST(SmartArraySequence, SetMethodWithZeroSize) {
+    // Arrange
+    auto sequence = make_shared<SmartArraySequence<std::string>>(0);
+    int index = 0;
+    std::string item = "TEST";
+
+    // Act
+
+    // Assert
+    EXPECT_THROW(sequence->set(index, item), std::out_of_range);
+}
+
+TEST(SmartArraySequence, RangeSetMethod) {
+    // Arrange
+    auto sequence = testSequence();
+    int startIndex = 2;
+    int endIndex = 5;
+    std::string item = "TEST";
+
+    // Act
+    sequence->set(startIndex, endIndex, item);
+
+    // Assert
+    for (int i = 0; i < startIndex; i++) {
+        EXPECT_EQ(sequence->get(i), "TEST" + std::to_string(i));
+    }
+    for (int i = startIndex; i < endIndex; i++) {
+        EXPECT_EQ(sequence->get(i), item);
+    }
+    for (int i = endIndex; i < sequence->getSize(); i++) {
+        EXPECT_EQ(sequence->get(i), "TEST" + std::to_string(i));
+    }
+}
+
+TEST(SmartArraySequence, RangeSetMethodExceptions) {
+    // Arrange
+    auto sequence = testSequence();
+
+
+    // Assert
+    EXPECT_THROW(sequence->set(-1, 5, "TEST10"), std::out_of_range);
+    EXPECT_THROW(sequence->set(2, 1, "TEST10"), std::invalid_argument);
+    EXPECT_THROW(sequence->set(0, 11, "TEST10"), std::out_of_range);
+    EXPECT_THROW(sequence->set(10, 10, "TEST10"), std::out_of_range);
+    EXPECT_THROW(sequence->set(2, -1, "TEST10"), std::out_of_range);
+}
+
+
 
 
 

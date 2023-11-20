@@ -26,10 +26,8 @@ namespace sem3 {
         explicit SmartArraySequence(const SmartDynamicArray<T> &array);
         explicit SmartArraySequence(const SmartLinkedList<T> &list);
         explicit SmartArraySequence(const ArraySequence<T> &array);
-        explicit SmartArraySequence(const Sequence<T> *sequence);
         explicit SmartArraySequence(const SmartSequence<T> *sequence);
-        explicit SmartArraySequence(const SharedPtr<SmartSequence<T>> sequence);
-        explicit SmartArraySequence(const UniquePtr<SmartSequence<T>> sequence);
+        explicit SmartArraySequence(const Sequence<T> *sequence);
 
         SmartArraySequence(const SmartArraySequence<T> &other);
         SmartArraySequence(SmartArraySequence<T> &&other) noexcept;
@@ -40,8 +38,8 @@ namespace sem3 {
         T get(int index) const override;
         int getSize() const override;
         int getCapacity() const;
-        //SmartArraySequence<T> getSubSequence(int startIndex, int endIndex) const;
-        //SharedPtr<SmartSequence<T>> getSubSequencePtr(int startIndex, int endIndex) const override;
+        // SmartArraySequence<T> getSubSequence(int startIndex, int endIndex) const;
+        // SharedPtr<SmartSequence<T>> getSubSequencePtr(int startIndex, int endIndex) const override;
 
         void set(int index, const T &item) override;
         using SmartSequence<T>::set;
@@ -124,15 +122,6 @@ namespace sem3 {
     }
 
     template <typename T>
-    SmartArraySequence<T>::SmartArraySequence(const Sequence<T> *sequence) {
-        size = sequence->GetSize();
-        array = make_unique<SmartDynamicArray<T>>(2 * size);
-        for (int i = 0; i < size; ++i) {
-            set(i, sequence->Get(i));
-        }
-    }
-
-    template <typename T>
     SmartArraySequence<T>::SmartArraySequence(const SmartSequence<T> *sequence) {
         size = sequence->getSize();
         array = make_unique<SmartDynamicArray<T>>(2 * size);
@@ -142,22 +131,24 @@ namespace sem3 {
     }
 
     template <typename T>
-    SmartArraySequence<T>::SmartArraySequence(const SharedPtr<SmartSequence<T>> sequence)
-        : SmartArraySequence(*sequence) {}
-
-    template <typename T>
-    SmartArraySequence<T>::SmartArraySequence(const UniquePtr<SmartSequence<T>> sequence)
-        : SmartArraySequence(*sequence) {}
+    SmartArraySequence<T>::SmartArraySequence(const Sequence<T> *sequence) {
+        size = sequence->GetSize();
+        array = make_unique<SmartDynamicArray<T>>(2 * size);
+        for (int i = 0; i < size; ++i) {
+            set(i, sequence->Get(i));
+        }
+    }
 
     template <typename T>
     SmartArraySequence<T>::SmartArraySequence(const SmartArraySequence<T> &other) {
         size = other.size;
-        array = make_unique<SmartDynamicArray<T>>(other.array);
+        array = sem3::make_unique<SmartDynamicArray<T>>(*other.array);
     }
 
     template <typename T>
     SmartArraySequence<T>::SmartArraySequence(SmartArraySequence<T> &&other) noexcept {
-        size = std::move(other.size);
+        size = other.size;
+        other.size = 0;
         array = std::move(other.array);
     }
 
@@ -167,7 +158,7 @@ namespace sem3 {
             return *this;
         }
         size = other.size;
-        array = make_unique<SmartDynamicArray<T>>(other.array);
+        array = sem3::make_unique<SmartDynamicArray<T>>(*other.array);
         return *this;
     }
 
@@ -176,7 +167,8 @@ namespace sem3 {
         if (this == &other) {
             return *this;
         }
-        size = std::move(other.size);
+        size = other.size;
+        other.size = 0;
         array = std::move(other.array);
         return *this;
     }

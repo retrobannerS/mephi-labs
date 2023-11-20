@@ -44,8 +44,13 @@ namespace sem3 {
 
     template <typename T>
     void SmartSequence<T>::set(int startIndex, int endIndex, const T &item) {
+        if (startIndex < 0 || startIndex >= getSize() || endIndex < 0 || endIndex > getSize()) {
+            throw std::out_of_range("Index out of range");
+        } else if (startIndex > endIndex) {
+            throw std::invalid_argument("Start index must be less than end index");
+        }
         for (int i = startIndex; i < endIndex; i++) {
-            Set(i, item);
+            set(i, item);
         }
     }
 
