@@ -1,0 +1,32 @@
+size:               10^1
+raw pointers:           1μs
+my smart pointers:      0μs
+std smart pointers:     1μs
+size:               10^2
+raw pointers:           16μs
+my smart pointers:      18μs
+std smart pointers:     22μs
+size:               10^3
+raw pointers:           227μs
+my smart pointers:      241μs
+std smart pointers:     277μs
+size:               10^4
+raw pointers:           2033μs
+my smart pointers:      1791μs
+std smart pointers:     1730μs
+size:               10^5
+raw pointers:           12381μs
+my smart pointers:      15418μs
+std smart pointers:     19281μs
+size:               10^6
+raw pointers:           159044μs
+my smart pointers:      201656μs
+std smart pointers:     257461μs
+size:               10^7
+raw pointers:           2295640μs
+my smart pointers:      3040643μs
+std smart pointers:     4024289μs
+size:               10^8
+raw pointers:           42253655μs
+my smart pointers:      52025391μs
+std smart pointers:     64683417μs
