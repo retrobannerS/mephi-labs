@@ -43,6 +43,10 @@ add_executable(lab1_tests
 target_include_directories(lab1_tests PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${SRC}" "${TESTS}")
 target_link_libraries(lab1_tests gtest gtest_main ${LAB2_LIBRARY} ${LAB3_LIBRARY})
 
+add_executable(lab1_benchmarks benchmarks.cpp)
+target_include_directories(lab1_benchmarks PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${SRC}" "${TESTS}")
+target_link_libraries(lab1_benchmarks ${LAB2_LIBRARY} ${LAB3_LIBRARY})
+
 if(MSVC)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     target_compile_options(lab1 PRIVATE /W4)
