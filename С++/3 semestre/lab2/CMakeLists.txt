@@ -27,6 +27,9 @@ add_executable(lab2_tests
                 tests/BubbleSorter_tests.cpp
                 tests/InsertionSorter_tests.cpp
                 tests/CocktailSorter_tests.cpp
+                tests/SelectionSorter_tests.cpp
+                tests/CountingSorter_tests.cpp
+                tests/BinaryInsertionSorter_tests.cpp
                 )
 target_include_directories(lab2_tests PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${LAB5_INCLUDE_PATH}" "${SRC}" "${TESTS}")
 target_link_libraries(lab2_tests gtest gtest_main ${LAB2_LIBRARY} ${LAB3_LIBRARY})
