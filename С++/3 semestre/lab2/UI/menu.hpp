@@ -17,9 +17,9 @@
 #include "RadixSorter.hpp"
 #include "SelectionSorter.hpp"
 #include "ShellSorter.hpp"
+#include <chrono>
 #include <iostream>
 #include <string>
-#include <chrono>
 
 using namespace std;
 
@@ -50,6 +50,7 @@ namespace sem3 {
         void print_condition();
         void sort();
 
+        void print_separator();
         void printSequence();
         void generateRandomSequence();
         void generateReversedSequence();
@@ -273,11 +274,12 @@ namespace sem3 {
         int size;
         cout << "Enter the size of the array: ";
         cin >> size;
-        if(size < 0) {
+        if (size < 0) {
             cout << "Invalid size." << endl;
             return;
         }
         sequence.reset(new SmartArraySequence<T>(size));
+        (*sorter).set_arr(sequence);
     }
 
     template <typename T>
@@ -303,6 +305,8 @@ namespace sem3 {
     int menu<T>::switch_actions() {
         int choice;
         cin >> choice;
+
+        print_separator();
 
         switch (choice) {
         case 1: {
@@ -355,6 +359,7 @@ namespace sem3 {
 
         cout << "Original sequence: ";
         printSequence();
+        cout << endl;
 
         size_t time;
 
@@ -366,10 +371,16 @@ namespace sem3 {
 
         cout << "Sorted sequence: ";
         printSequence();
+        cout << endl;
 
         if (check_time) {
             cout << "Time: " << time << " microseconds" << endl;
         }
+    }
+
+    template <typename T>
+    void menu<T>::print_separator() {
+        cout << endl << "----------------------------------------" << endl << endl;
     }
 
     template <typename T>
@@ -384,14 +395,20 @@ namespace sem3 {
     void menu<T>::generateRandomSequence() {
         srand(time(NULL));
         for (int i = 0; i < sequence->getSize(); ++i) {
-            sequence->set(i, rand() % 100);
+            sequence->set(i, rand() % sequence->getSize());
         }
     }
 
     template <typename T>
     void menu<T>::generateReversedSequence() {
-        for (int i = 0; i < sequence->getSize(); ++i) {
-            sequence->set(i, sequence->getSize() - i);
+        if (cmp(1, 2) > 0) {
+            for (int i = 0; i < sequence->getSize(); ++i) {
+                sequence->set(i, i);
+            }
+        } else {
+            for (int i = 0; i < sequence->getSize(); ++i) {
+                sequence->set(i, sequence->getSize() - i);
+            }
         }
     }
 
@@ -408,20 +425,27 @@ namespace sem3 {
     void menu<T>::run() {
         print_sorters();
         switch_sorter();
+        print_separator();
         print_comparators();
         switch_comparator();
+        print_separator();
         print_modes();
         switch_mode();
+        print_separator();
         switch_size();
+        print_separator();
         print_check_time();
         switch_check_time();
+        print_separator();
 
         while (true) {
             print_condition();
+            print_separator();
             print_actions();
             if (!switch_actions()) {
                 break;
             }
+            print_separator();
         }
     }
 } // namespace sem3

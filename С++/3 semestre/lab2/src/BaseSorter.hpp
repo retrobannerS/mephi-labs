@@ -15,6 +15,9 @@ namespace sem3 {
         void set_cmp(int (*cmp)(T, T)) {
             this->cmp = cmp;
         }
+        void set_arr(SharedPtr<SmartSequence<T>> arr) {
+            this->arr = arr;
+        }
     };
 
 
