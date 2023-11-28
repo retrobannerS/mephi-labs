@@ -45,8 +45,8 @@ add_executable(lab2_tests
 target_include_directories(lab2_tests PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${LAB5_INCLUDE_PATH}" "${SRC}" "${TESTS}")
 target_link_libraries(lab2_tests gtest gtest_main ${LAB2_LIBRARY} ${LAB3_LIBRARY})
 
-#add_executable(lab2_ui src/BubbleSort.cpp)
-#target_include_directories(lab2_ui PRIVATE "${SRC}")
+add_executable(lab2_ui UI/main.cpp)
+target_include_directories(lab2_ui PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${LAB5_INCLUDE_PATH}" "${SRC}")
 
 if(MSVC)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
