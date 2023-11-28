@@ -12,6 +12,9 @@ namespace sem3 {
         BaseSorter(SharedPtr<SmartSequence<T>> arr, int (*cmp)(T, T)) : arr(arr), cmp(cmp) {}
         virtual void sort() = 0;
         virtual ~BaseSorter() = default;
+        void set_cmp(int (*cmp)(T, T)) {
+            this->cmp = cmp;
+        }
     };
 
 
