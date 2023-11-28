@@ -27,7 +27,7 @@ namespace sem3 {
     template <typename T>
     class menu {
     private:
-        SmartArraySequence<T> sequence;
+        SharedPtr<SmartSequence<T>> sequence;
         int (*cmp)(T, T);
         int mode;
         UniquePtr<BaseSorter<T>> sorter;
@@ -56,7 +56,14 @@ namespace sem3 {
         size_t measureSortingTime();
 
     public:
-        menu() : sequence(SmartArraySequence<T>()), cmp([](T a, T b) -> int { return a - b; }), mode(1), sorter(nullptr), sorterName(""), check_time(false) {}
+        menu() {
+            sequence.reset(new SmartArraySequence<T>());
+            cmp = [](T a, T b) -> int { return a - b; };
+            mode = 1;
+            sorter.reset(new InsertionSorter<T>(sequence, cmp));
+            sorterName = "InsertionSort";
+            check_time = false;
+        }
         void run();
     };
 
@@ -126,94 +133,93 @@ namespace sem3 {
 
     template <typename T>
     void menu<T>::switch_sorter() {
-        SharedPtr<SmartSequence<T>> sequence_ptr(&sequence);
 
         int choice;
         cin >> choice;
 
         switch (choice) {
         case 1: {
-            sorter.reset(new BinaryInsertionSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new BinaryInsertionSorter<T>(sequence, cmp));
             sorterName = "BinaryInsertionSort";
             break;
         }
         case 2: {
-            sorter.reset(new BubbleSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new BubbleSorter<T>(sequence, cmp));
             sorterName = "BubbleSort";
             break;
         }
         case 3: {
-            sorter.reset(new CocktailSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new CocktailSorter<T>(sequence, cmp));
             sorterName = "CocktailSort";
             break;
         }
         case 4: {
-            sorter.reset(new CombSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new CombSorter<T>(sequence, cmp));
             sorterName = "CombSort";
             break;
         }
         case 5: {
-            sorter.reset(new CountingSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new CountingSorter<T>(sequence, cmp));
             sorterName = "CountingSort";
             break;
         }
         case 6: {
-            sorter.reset(new CycleSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new CycleSorter<T>(sequence, cmp));
             sorterName = "CycleSort";
             break;
         }
         case 7: {
-            sorter.reset(new DoubleSelectionSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new DoubleSelectionSorter<T>(sequence, cmp));
             sorterName = "DoubleSelectionSort";
             break;
         }
         case 8: {
-            sorter.reset(new GnomeSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new GnomeSorter<T>(sequence, cmp));
             sorterName = "GnomeSort";
             break;
         }
         case 9: {
-            sorter.reset(new HeapSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new HeapSorter<T>(sequence, cmp));
             sorterName = "HeapSort";
             break;
         }
         case 10: {
-            sorter.reset(new InsertionByTreeSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new InsertionByTreeSorter<T>(sequence, cmp));
             sorterName = "InsertionByTreeSort";
             break;
         }
         case 11: {
-            sorter.reset(new InsertionSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new InsertionSorter<T>(sequence, cmp));
             sorterName = "InsertionSort";
             break;
         }
         case 12: {
-            sorter.reset(new MergeSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new MergeSorter<T>(sequence, cmp));
             sorterName = "MergeSort";
             break;
         }
         case 13: {
-            sorter.reset(new OddEvenSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new OddEvenSorter<T>(sequence, cmp));
             sorterName = "OddEvenSort";
             break;
         }
         case 14: {
-            sorter.reset(new QuickSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new QuickSorter<T>(sequence, cmp));
             sorterName = "QuickSort";
             break;
         }
         case 15: {
-            sorter.reset(new RadixSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new RadixSorter<T>(sequence, cmp));
             sorterName = "RadixSort";
             break;
         }
         case 16: {
-            sorter.reset(new SelectionSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new SelectionSorter<T>(sequence, cmp));
             sorterName = "SelectionSort";
             break;
         }
         case 17: {
-            sorter.reset(new ShellSorter<T>(sequence_ptr, cmp));
+            sorter.reset(new ShellSorter<T>(sequence, cmp));
             sorterName = "ShellSort";
             break;
         }
@@ -267,7 +273,11 @@ namespace sem3 {
         int size;
         cout << "Enter the size of the array: ";
         cin >> size;
-        sequence.resize(size);
+        if(size < 0) {
+            cout << "Invalid size." << endl;
+            return;
+        }
+        sequence.reset(new SmartArraySequence<T>(size));
     }
 
     template <typename T>
@@ -332,7 +342,7 @@ namespace sem3 {
         cout << "Sorting Algorithm: " << sorterName << endl;
         cout << "Comparator: " << (cmp(1, 2) > 0 ? "Descending" : "Ascending") << endl;
         cout << "Mode: " << (mode == 1 ? "Random" : "Reversed") << endl;
-        cout << "Size: " << sequence.getSize() << endl;
+        cout << "Size: " << sequence->getSize() << endl;
     }
 
     template <typename T>
@@ -364,8 +374,8 @@ namespace sem3 {
 
     template <typename T>
     void menu<T>::printSequence() {
-        for (int i = 0; i < sequence.getSize(); ++i) {
-            cout << sequence.get(i) << " ";
+        for (int i = 0; i < sequence->getSize(); ++i) {
+            cout << sequence->get(i) << " ";
         }
         cout << endl;
     }
@@ -373,15 +383,15 @@ namespace sem3 {
     template <typename T>
     void menu<T>::generateRandomSequence() {
         srand(time(NULL));
-        for (int i = 0; i < sequence.getSize(); ++i) {
-            sequence.set(i, rand() % 100);
+        for (int i = 0; i < sequence->getSize(); ++i) {
+            sequence->set(i, rand() % 100);
         }
     }
 
     template <typename T>
     void menu<T>::generateReversedSequence() {
-        for (int i = 0; i < sequence.getSize(); ++i) {
-            sequence.set(i, sequence.getSize() - i);
+        for (int i = 0; i < sequence->getSize(); ++i) {
+            sequence->set(i, sequence->getSize() - i);
         }
     }
 

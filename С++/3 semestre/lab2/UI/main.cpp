@@ -1,20 +1,12 @@
-#include "menu.hpp"
 #include "InsertionSorter.hpp"
-
+#include "menu.hpp"
 
 using namespace std;
 using namespace sem3;
 
 int main() {
-    //menu<int> my_menu;
-    //my_menu.run();
-
-    //test deleting of sorters
-    UniquePtr<BaseSorter<int>> sorter(new InsertionSorter<int>(SharedPtr<SmartSequence<int>>(new SmartArraySequence<int>), [](int a, int b) {return a - b;}));
-    sorter.reset(new InsertionSorter<int>(SharedPtr<SmartSequence<int>>(new SmartArraySequence<int>), [](int a, int b) {return a - b;}));
+    menu<int> my_menu;
+    my_menu.run();
 
     return 0;
 }
-
-
-
