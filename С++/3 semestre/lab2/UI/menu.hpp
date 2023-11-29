@@ -56,6 +56,8 @@ namespace sem3 {
         void generateReversedSequence();
         size_t measureSortingTime();
 
+        int get_from_console(int min, int max);
+
     public:
         menu() {
             sequence.reset(new SmartArraySequence<T>());
@@ -96,7 +98,9 @@ namespace sem3 {
     void menu<T>::print_comparators() {
         cout << "Comparator Menu:" << endl;
         cout << "1. Ascending" << endl;
-        cout << "2. Descending" << endl;
+        if (sorterName != "CountingSort" && sorterName != "RadixSort") {
+            cout << "2. Descending" << endl;
+        }
 
         cout << "Enter the corresponding number to choose a comparator: ";
     }
@@ -135,8 +139,7 @@ namespace sem3 {
     template <typename T>
     void menu<T>::switch_sorter() {
 
-        int choice;
-        cin >> choice;
+        int choice = get_from_console(1, 17);
 
         switch (choice) {
         case 1: {
@@ -160,6 +163,7 @@ namespace sem3 {
             break;
         }
         case 5: {
+            cmp = [](T a, T b) -> int { return a - b; };
             sorter.reset(new CountingSorter<T>(sequence, cmp));
             sorterName = "CountingSort";
             break;
@@ -210,6 +214,7 @@ namespace sem3 {
             break;
         }
         case 15: {
+            cmp = [](T a, T b) -> int { return a - b; };
             sorter.reset(new RadixSorter<T>(sequence, cmp));
             sorterName = "RadixSort";
             break;
@@ -231,8 +236,7 @@ namespace sem3 {
 
     template <typename T>
     void menu<T>::switch_comparator() {
-        int choice;
-        cin >> choice;
+        int choice = get_from_console(1, 2);
 
         switch (choice) {
         case 1: {
@@ -240,6 +244,10 @@ namespace sem3 {
             break;
         }
         case 2: {
+            if (sorterName == "CountingSort" || sorterName == "RadixSort") {
+                cout << "Invalid number." << endl;
+                return;
+            }
             cmp = [](T a, T b) -> int { return b - a; };
             break;
         }
@@ -252,8 +260,7 @@ namespace sem3 {
 
     template <typename T>
     void menu<T>::switch_mode() {
-        int choice;
-        cin >> choice;
+        int choice = get_from_console(1, 2);
 
         switch (choice) {
         case 1: {
@@ -271,9 +278,9 @@ namespace sem3 {
 
     template <typename T>
     void menu<T>::switch_size() {
-        int size;
         cout << "Enter the size of the array: ";
-        cin >> size;
+        int size = get_from_console(0, 10000);
+
         if (size < 0) {
             cout << "Invalid size." << endl;
             return;
@@ -284,8 +291,7 @@ namespace sem3 {
 
     template <typename T>
     void menu<T>::switch_check_time() {
-        int choice;
-        cin >> choice;
+        int choice = get_from_console(1, 2);
 
         switch (choice) {
         case 1: {
@@ -303,8 +309,7 @@ namespace sem3 {
 
     template <typename T>
     int menu<T>::switch_actions() {
-        int choice;
-        cin >> choice;
+        int choice = get_from_console(1, 6);
 
         print_separator();
 
@@ -419,6 +424,17 @@ namespace sem3 {
         auto end_time = chrono::high_resolution_clock::now();
 
         return chrono::duration_cast<chrono::microseconds>(end_time - start_time).count();
+    }
+
+    template <typename T>
+    int menu<T>::get_from_console(int min, int max) {
+        int num;
+        while (!(std::cin >> num && num >= min && num <= max)) {
+            std::cin.clear();                                                   // clear bad input flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // discard input
+            std::cout << "Invalid input; please re-enter: ";
+        }
+        return num;
     }
 
     template <typename T>

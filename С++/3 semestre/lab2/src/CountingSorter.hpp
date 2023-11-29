@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseSorter.hpp"
 #include "SmartArraySequence.hpp"
+#include <vector>
 
 namespace sem3 {
     template <typename T>
@@ -16,11 +17,11 @@ namespace sem3 {
 
     template <typename T>
     void CountingSorter<T>::sort() {
-        if(arr->empty()) {
+        if (arr->empty()) {
             return;
         }
-        int min = arr->get(0);
-        int max = arr->get(0);
+        T min = arr->get(0);
+        T max = arr->get(0);
         for (int i = 1; i < arr->getSize(); ++i) {
             if (cmp(arr->get(i), min) < 0) {
                 min = arr->get(i);
@@ -30,17 +31,23 @@ namespace sem3 {
             }
         }
         int range = max - min + 1;
-        auto count = make_unique<SmartArraySequence<int>>(range);
+        SmartArraySequence<int> count(range, 0);
         for (int i = 0; i < arr->getSize(); ++i) {
-            ++(*count)[arr->get(i) - min];
+            count[arr->get(i) - min]++;
         }
 
-        int index = 0;
-        for (int i = min; i <= max; ++i) {
-            while ((*count)[i - min] > 0) {
-                (*arr)[index++] = i;
-                (*count)[i - min]--;
-            }
+        for (int i = 1; i < range; ++i) {
+            count[i] += count[i - 1];
+        }
+
+        SmartArraySequence<T> output(arr->getSize());
+        for (int i = arr->getSize() - 1; i >= 0; --i) {
+            output[count[arr->get(i) - min] - 1] = arr->get(i);
+            count[arr->get(i) - min]--;
+        }
+        for (int i = 0; i < arr->getSize(); ++i) {
+            arr->set(i, output[i]);
         }
     }
+
 } // namespace sem3
