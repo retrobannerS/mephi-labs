@@ -275,6 +275,7 @@ namespace lab2 {
         // result_ptr[tmp_index] = tmp;
         // std::pair<Sequence<T> **, int> result = {result_ptr, result_size};
         // return result;
+        return std::pair<Sequence<T>**, int>();
     }
 
     template <typename T>
