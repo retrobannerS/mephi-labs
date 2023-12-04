@@ -254,27 +254,27 @@ namespace lab2 {
 
     template <typename T>
     std::pair<Sequence<T>**, int> ArraySequence<T>::Split(const T &delim) const {
-        int result_size = 1;
-        for(int i = 0; i != this->GetSize(); ++i) {
-            if(this->Get(i) == delim) {
-                result_size++;
-            }
-        }
-        auto **result_ptr = new Sequence<T>*[result_size];
+        // int result_size = 1;
+        // for(int i = 0; i != this->GetSize(); ++i) {
+        //     if(this->Get(i) == delim) {
+        //         result_size++;
+        //     }
+        // }
+        // auto **result_ptr = new Sequence<T>*[result_size];
 
-        Sequence<T> *tmp = new ArraySequence<T>;
-        int tmp_index = 0;
-        for(int i = 0; i != this->GetSize(); ++i) {
-            if(this->Get(i) == delim) {
-                result_ptr[tmp_index++] = tmp;
-                tmp = new ArraySequence<T>;
-            } else {
-                tmp->PushBack(this->Get(i));
-            }
-        }
-        result_ptr[tmp_index] = tmp;
-        std::pair<Sequence<T> **, int> result = {result_ptr, result_size};
-        return result;
+        // Sequence<T> *tmp = new ArraySequence<T>;
+        // int tmp_index = 0;
+        // for(int i = 0; i != this->GetSize(); ++i) {
+        //     if(this->Get(i) == delim) {
+        //         result_ptr[tmp_index++] = tmp;
+        //         tmp = new ArraySequence<T>;
+        //     } else {
+        //         tmp->PushBack(this->Get(i));
+        //     }
+        // }
+        // result_ptr[tmp_index] = tmp;
+        // std::pair<Sequence<T> **, int> result = {result_ptr, result_size};
+        // return result;
     }
 
     template <typename T>

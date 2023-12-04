@@ -25,13 +25,14 @@ endif()
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/googletest_lib" "googletest_lib")
 
 add_executable(lab4_tests
-                
-                )
+               src/Graphs/Graph.cpp
+               src/Graphs/DirectedGraph.cpp
+               tests/Graphs_tests/DirectedGraph_tests.cpp)
 target_include_directories(lab4_tests PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${LAB5_INCLUDE_PATH}" "${LAB6_INCLUDE_PATH}" "${SRC}" "${TESTS}")
 target_link_libraries(lab4_tests gtest gtest_main ${LAB2_LIBRARY} ${LAB3_LIBRARY})
 
-add_executable(lab2_ui UI/main.cpp)
-target_include_directories(lab2_ui PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${LAB5_INCLUDE_PATH}" "${SRC}")
+#add_executable(lab4_ui UI/main.cpp)
+#target_include_directories(lab4_ui PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${LAB5_INCLUDE_PATH}" "LAB6_INCLUDE_PATH" "${SRC}")
 
 if(MSVC)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
