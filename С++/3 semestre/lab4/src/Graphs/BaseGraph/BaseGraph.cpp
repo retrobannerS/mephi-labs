@@ -1,14 +1,14 @@
-#include "Graph.hpp"
+#include "BaseGraph.hpp"
 
 namespace sem3 {
-    bool Graph::isTombstone(int vertex) const noexcept {
+    bool BaseGraph::isTombstone(int vertex) const noexcept {
         if (vertex < 0 or vertex >= graph.GetSize()) {
             return true;
         }
         return graph.Get(vertex).GetSize() == 1 && graph.Get(vertex).Get(0) == -1;
     }
-
-    void Graph::makeTombstone(int vertex) noexcept {
+    
+    void BaseGraph::makeTombstone(int vertex) noexcept {
         if (isTombstone(vertex)) {
             return;
         }
@@ -16,16 +16,21 @@ namespace sem3 {
             graph.PopBack();
             return;
         }
+        for (int i = 0; i < getVertexCount(); ++i) {
+            if (hasEdge(i, vertex)) {
+                removeEdge(i, vertex);
+            }
+        }
         graph[vertex].Clear();
         graph[vertex].PushBack(-1);
     }
 
-    int Graph::getVertexCount() const noexcept {
+    int BaseGraph::getVertexCount() const noexcept {
         int tombstones = getTombstones().GetSize();
         return graph.GetSize() - tombstones;
     }
 
-    ArraySequence<int> Graph::getVertexes() const noexcept {
+    ArraySequence<int> BaseGraph::getVertexes() const noexcept {
         ArraySequence<int> result;
         for (int i = 0; i < graph.GetSize(); ++i) {
             if (!isTombstone(i)) {
@@ -35,7 +40,7 @@ namespace sem3 {
         return result;
     }
 
-    ArraySequence<int> Graph::getTombstones() const noexcept {
+    ArraySequence<int> BaseGraph::getTombstones() const noexcept {
         ArraySequence<int> result;
         for (int i = 0; i < graph.GetSize(); ++i) {
             if (isTombstone(i)) {
@@ -45,16 +50,42 @@ namespace sem3 {
         return result;
     }
 
-    void Graph::removeVertex(int vertex) {
+    void BaseGraph::addVertex() noexcept { addVertex(graph.GetSize()); }
+
+    void BaseGraph::addVertex(int vertex) {
+        if (vertex < 0) {
+            throw out_of_range("Vertex index is out of range");
+        } else if (isTombstone(vertex) && vertex < graph.GetSize()) {
+            graph[vertex] = ListSequence<int>();
+        } else if (vertex >= graph.GetSize()) {
+            for (int i = graph.GetSize(); i < vertex; ++i) {
+                graph.PushBack(ListSequence<int>());
+                makeTombstone(i);
+            }
+            graph.PushBack(ListSequence<int>());
+        }
+    }
+
+    void BaseGraph::addVertex(ListSequence<int> neighbors) noexcept { addVertex(graph.GetSize(), neighbors); }
+
+    void BaseGraph::addVertex(int vertex, ListSequence<int> neighbors) {
+        addVertex(vertex);
+        graph[vertex].Clear();
+        for (int i = 0; i < neighbors.GetSize(); ++i) {
+            addEdge(vertex, neighbors.Get(i));
+        }
+    }
+
+    void BaseGraph::removeVertex(int vertex) {
         if (vertex < 0 or vertex >= graph.GetSize()) {
             throw out_of_range("Vertex index is out of range");
         }
         makeTombstone(vertex);
     }
 
-    bool Graph::hasVertex(int vertex) const noexcept { return !isTombstone(vertex); }
+    bool BaseGraph::hasVertex(int vertex) const noexcept { return !isTombstone(vertex); }
 
-    bool Graph::hasEdge(int from, int to) const noexcept {
+    bool BaseGraph::hasEdge(int from, int to) const noexcept {
         if (hasVertex(from) && hasVertex(to)) {
             for (int i = 0; i < graph.Get(from).GetSize(); ++i) {
                 if (graph.Get(from).Get(i) == to) {
@@ -65,9 +96,9 @@ namespace sem3 {
         return false;
     }
 
-    bool Graph::isEmpty() const noexcept { return getVertexCount() == 0; }
+    bool BaseGraph::isEmpty() const noexcept { return getVertexCount() == 0; }
 
-    bool Graph::operator==(const Graph &other) const noexcept {
+    bool BaseGraph::operator==(const BaseGraph &other) const noexcept {
         if (getVertexCount() != other.getVertexCount()) {
             return false;
         }
@@ -87,9 +118,9 @@ namespace sem3 {
         return true;
     }
 
-    bool Graph::operator!=(const Graph &other) const noexcept { return !(*this == other); }
+    bool BaseGraph::operator!=(const BaseGraph &other) const noexcept { return !(*this == other); }
 
-    ostream &operator<<(ostream &out, const Graph &graph) {
+    ostream &operator<<(ostream &out, const BaseGraph &graph) {
         for (int i = 0; i < graph.graph.GetSize(); ++i) {
             if (graph.isTombstone(i)) {
                 continue;

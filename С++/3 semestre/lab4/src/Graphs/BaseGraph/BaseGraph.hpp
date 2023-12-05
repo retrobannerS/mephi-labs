@@ -8,13 +8,13 @@ using namespace std;
 using namespace lab2;
 
 namespace sem3 {
-    //base virtual class graph
-    class Graph {
+    class BaseGraph {
     protected:
         ArraySequence<ListSequence<int>> graph;
         void makeTombstone(int vertex) noexcept;
+
     public:
-        virtual ~Graph() noexcept = default;
+        virtual ~BaseGraph() noexcept = default;
 
         int getVertexCount() const noexcept;
         virtual int getEdgeCount() const noexcept = 0;
@@ -23,10 +23,10 @@ namespace sem3 {
         virtual ArraySequence<pair<int, int>> getEdges() const noexcept = 0;
         ArraySequence<int> getTombstones() const noexcept;
 
-        virtual void addVertex() noexcept = 0;
-        virtual void addVertex(int vertex) = 0;
-        virtual void addVertex(ListSequence<int> neighbors) noexcept = 0;
-        virtual void addVertex(int vertex, ListSequence<int> neighbors) = 0;
+        void addVertex() noexcept;
+        void addVertex(int vertex);
+        void addVertex(ListSequence<int> neighbors) noexcept;
+        void addVertex(int vertex, ListSequence<int> neighbors);
         virtual void addEdge(int from, int to) = 0;
 
         void removeVertex(int vertex);
@@ -36,15 +36,14 @@ namespace sem3 {
         bool hasEdge(int from, int to) const noexcept;
         bool isTombstone(int vertex) const noexcept;
 
+        ArraySequence<int> achievableFrom(int vertex);
+
         bool isEmpty() const noexcept;
-        bool isAcyclic() const noexcept;
-        bool isTree() const noexcept;
 
-        bool operator==(const Graph& other) const noexcept;
-        bool operator!=(const Graph& other) const noexcept;
+        bool operator==(const BaseGraph &other) const noexcept;
+        bool operator!=(const BaseGraph &other) const noexcept;
 
-        friend ostream& operator<<(ostream& out, const Graph& graph);
+        friend ostream &operator<<(ostream &out, const BaseGraph &graph);
     };
-
 
 } // namespace sem3

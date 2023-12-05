@@ -25,9 +25,16 @@ endif()
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/googletest_lib" "googletest_lib")
 
 add_executable(lab4_tests
-               src/Graphs/Graph.cpp
-               src/Graphs/DirectedGraph.cpp
-               tests/Graphs_tests/DirectedGraph_tests.cpp)
+               src/Graphs/BaseGraph/BaseGraph.cpp
+               src/Graphs/DiGraph/DiGraph.cpp
+               src/Graphs/Graph/Graph.cpp
+               src/GraphProcessors/DiGraphProcessor/DiGraphProcessor.cpp
+               #src/GraphProcessors/GraphProcessor/GraphProcessor.cpp
+               tests/Graphs_tests/DiGraph_tests.cpp
+               tests/Graphs_tests/Graph_tests.cpp
+               tests/GraphProcessors_tests/DiGraphProcessor_tests.cpp
+               #tests/GraphProcessors_tests/GraphProcessor_tests.cpp
+               )
 target_include_directories(lab4_tests PRIVATE "${LAB2_INCLUDE_PATH}" "${LAB3_INCLUDE_PATH}" "${LAB5_INCLUDE_PATH}" "${LAB6_INCLUDE_PATH}" "${SRC}" "${TESTS}")
 target_link_libraries(lab4_tests gtest gtest_main ${LAB2_LIBRARY} ${LAB3_LIBRARY})
 

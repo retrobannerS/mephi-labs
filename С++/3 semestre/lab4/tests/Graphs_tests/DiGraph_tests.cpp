@@ -1,4 +1,4 @@
-#include "Graphs/DirectedGraph.hpp"
+#include "Graphs/DiGraph/DiGraph.hpp"
 #include "gtest/gtest.h"
 #include <vector>
 
@@ -17,22 +17,23 @@ ArraySequence<ListSequence<int>> getAdjacencyList() {
     return result;
 }
 
-TEST(DirectedGraph, DefaultConstructor) {
+TEST(DiGraph, DefaultConstructor) {
     // Arrange
 
     // Act
-    DirectedGraph graph;
+    DiGraph graph;
 
     // Assert
     EXPECT_EQ(graph.getVertexCount(), 0);
+    EXPECT_EQ(graph.getEdgeCount(), 0);
 }
 
-TEST(DirectedGraph, ConstructorFromAdjacencyList) {
+TEST(DiGraph, ConstructorFromAdjacencyList) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
 
     // Act
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Assert
     EXPECT_EQ(graph.getVertexCount(), adjacencyList.GetSize());
@@ -42,7 +43,7 @@ TEST(DirectedGraph, ConstructorFromAdjacencyList) {
     }
 }
 
-TEST(DirectedGraph, ConstructorFromAdjacencyMatrix) {
+TEST(DiGraph, ConstructorFromAdjacencyMatrix) {
     // Arrange
     vector<vector<int>> vec = {{0, 1, 1, 1}, {1, 0, 1, 1}, {1, 1, 0, 1}, {1, 1, 1, 0}};
     ArraySequence<ArraySequence<int>> adjacencyMatrix(vec.size());
@@ -53,7 +54,7 @@ TEST(DirectedGraph, ConstructorFromAdjacencyMatrix) {
     }
 
     // Act
-    DirectedGraph graph(adjacencyMatrix);
+    DiGraph graph(adjacencyMatrix);
 
     // Assert
     EXPECT_EQ(graph.getVertexCount(), adjacencyMatrix.GetSize());
@@ -63,7 +64,7 @@ TEST(DirectedGraph, ConstructorFromAdjacencyMatrix) {
     }
 }
 
-TEST(DirectedGraph, ConstructorFromEdges) {
+TEST(DiGraph, ConstructorFromEdges) {
     // Arrange
     ArraySequence<pair<int, int>> edges;
     edges.PushBack(make_pair(0, 1));
@@ -77,7 +78,7 @@ TEST(DirectedGraph, ConstructorFromEdges) {
     edges.PushBack(make_pair(2, 3));
 
     // Act
-    DirectedGraph graph(edges);
+    DiGraph graph(edges);
 
     // Assert
     EXPECT_EQ(graph.getVertexCount(), 4);
@@ -87,13 +88,31 @@ TEST(DirectedGraph, ConstructorFromEdges) {
     }
 }
 
-TEST(DirectedGraph, CopyConstructor) {
+TEST(DiGraph, ConstructorFromEdges2) {
     // Arrange
-    auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    ArraySequence<pair<int, int>> edges;
+    edges.PushBack(make_pair(0, 4));
 
     // Act
-    DirectedGraph graphCopy(graph);
+    DiGraph graph(edges);
+
+    // Assert
+    EXPECT_EQ(graph.getVertexCount(), 2);
+    EXPECT_EQ(graph.getEdgeCount(), 1);
+    EXPECT_TRUE(graph.hasEdge(0, 4));
+    for(int i = 1; i < 4; ++i){
+        EXPECT_TRUE(graph.isTombstone(1));
+    }
+
+}
+
+TEST(DiGraph, CopyConstructor) {
+    // Arrange
+    auto adjacencyList = getAdjacencyList();
+    DiGraph graph(adjacencyList);
+
+    // Act
+    DiGraph graphCopy(graph);
 
     // Assert
     EXPECT_EQ(graph.getVertexCount(), graphCopy.getVertexCount());
@@ -105,13 +124,13 @@ TEST(DirectedGraph, CopyConstructor) {
     }
 }
 
-TEST(DirectedGraph, MoveConstructor) {
+TEST(DiGraph, MoveConstructor) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
-    DirectedGraph graphCopy(std::move(graph));
+    DiGraph graphCopy(std::move(graph));
 
     // Assert
     EXPECT_EQ(graphCopy.getVertexCount(), adjacencyList.GetSize());
@@ -119,13 +138,14 @@ TEST(DirectedGraph, MoveConstructor) {
         for (int j = 0; j < adjacencyList.Get(i).GetSize(); ++j)
             EXPECT_EQ(graphCopy.getOutNeighbors(i)[j], adjacencyList.Get(i)[j]);
     }
+    EXPECT_EQ(graph.getVertexCount(), 0);
 }
 
-TEST(DirectedGraph, CopyAssignment) {
+TEST(DiGraph, CopyAssignment) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
-    DirectedGraph graphCopy;
+    DiGraph graph(adjacencyList);
+    DiGraph graphCopy;
 
     // Act
     graphCopy = graph;
@@ -140,11 +160,11 @@ TEST(DirectedGraph, CopyAssignment) {
     }
 }
 
-TEST(DirectedGraph, MoveAssignment) {
+TEST(DiGraph, MoveAssignment) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
-    DirectedGraph graphCopy;
+    DiGraph graph(adjacencyList);
+    DiGraph graphCopy;
 
     // Act
     graphCopy = std::move(graph);
@@ -155,12 +175,13 @@ TEST(DirectedGraph, MoveAssignment) {
         for (int j = 0; j < adjacencyList.Get(i).GetSize(); ++j)
             EXPECT_EQ(graphCopy.getOutNeighbors(i)[j], adjacencyList.Get(i)[j]);
     }
+    EXPECT_EQ(graph.getVertexCount(), 0);
 }
 
-TEST(DirectedGraph, GetVertexCount) {
+TEST(DiGraph, GetVertexCount) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
 
@@ -168,22 +189,22 @@ TEST(DirectedGraph, GetVertexCount) {
     EXPECT_EQ(graph.getVertexCount(), adjacencyList.GetSize());
 }
 
-TEST(DirectedGraph, GetVertexCountAfterRemove) {
+TEST(DiGraph, GetVertexCountAfterRemove) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
     graph.removeVertex(0);
-    
+
     // Assert
     EXPECT_EQ(graph.getVertexCount(), adjacencyList.GetSize() - 1);
 }
 
-TEST(DirectedGraph, GetVertexCountAfterAdd) {
+TEST(DiGraph, GetVertexCountAfterAdd) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
     graph.addVertex();
@@ -192,10 +213,10 @@ TEST(DirectedGraph, GetVertexCountAfterAdd) {
     EXPECT_EQ(graph.getVertexCount(), adjacencyList.GetSize() + 1);
 }
 
-TEST(DirectedGraph, GetEdgeCount) {
+TEST(DiGraph, GetEdgeCount) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
     int edgeCount = 0;
     for (int i = 0; i < adjacencyList.GetSize(); ++i) {
         edgeCount += adjacencyList.Get(i).GetSize();
@@ -206,10 +227,10 @@ TEST(DirectedGraph, GetEdgeCount) {
     EXPECT_EQ(graph.getEdgeCount(), edgeCount);
 }
 
-TEST(DirectedGraph, GetEdgeCountAfterAdd) {
+TEST(DiGraph, GetEdgeCountAfterAdd) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
     int edgeCount = 0;
     for (int i = 0; i < adjacencyList.GetSize(); ++i) {
         edgeCount += adjacencyList.Get(i).GetSize();
@@ -222,10 +243,10 @@ TEST(DirectedGraph, GetEdgeCountAfterAdd) {
     EXPECT_EQ(graph.getEdgeCount(), edgeCount + 1);
 }
 
-TEST(DirectedGraph, GetEdgeCountAfterRemove) {
+TEST(DiGraph, GetEdgeCountAfterRemove) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
     int edgeCount = 0;
     for (int i = 0; i < adjacencyList.GetSize(); ++i) {
         edgeCount += adjacencyList.Get(i).GetSize();
@@ -238,10 +259,10 @@ TEST(DirectedGraph, GetEdgeCountAfterRemove) {
     EXPECT_EQ(graph.getEdgeCount(), edgeCount - 1);
 }
 
-TEST(DirectedGraph, GetVertexes) {
+TEST(DiGraph, GetVertexes) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
     auto vertexes = graph.getVertexes();
@@ -253,10 +274,10 @@ TEST(DirectedGraph, GetVertexes) {
     }
 }
 
-TEST(DirectedGraph, GetEdges) {
+TEST(DiGraph, GetEdges) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
     ArraySequence<pair<int, int>> edges;
     for (int i = 0; i < adjacencyList.GetSize(); ++i) {
         for (int j = 0; j < adjacencyList.Get(i).GetSize(); ++j) {
@@ -275,10 +296,10 @@ TEST(DirectedGraph, GetEdges) {
     }
 }
 
-TEST(DirectedGraph, GetTombstonesEmpty) {
+TEST(DiGraph, GetTombstonesEmpty) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
     auto tombstones = graph.getTombstones();
@@ -287,10 +308,10 @@ TEST(DirectedGraph, GetTombstonesEmpty) {
     EXPECT_TRUE(tombstones.Empty());
 }
 
-TEST(DirectedGraph, GetTombstones) {
+TEST(DiGraph, GetTombstones) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
     graph.removeVertex(0);
     graph.removeVertex(2);
 
@@ -303,10 +324,10 @@ TEST(DirectedGraph, GetTombstones) {
     EXPECT_EQ(tombstones.Get(1), 2);
 }
 
-TEST(DirectedGraph, AddVertex) {
+TEST(DiGraph, AddVertex) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
     graph.addVertex();
@@ -316,24 +337,26 @@ TEST(DirectedGraph, AddVertex) {
     EXPECT_EQ(graph.getOutNeighbors(adjacencyList.GetSize()).GetSize(), 0);
 }
 
-TEST(DirectedGraph, AddAssignedVertex) {
+TEST(DiGraph, AddAssignedVertex) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
     graph.removeVertex(1);
 
     // Act
     graph.addVertex(1);
+    graph.addVertex(3);
 
     // Assert
     EXPECT_EQ(graph.getVertexCount(), adjacencyList.GetSize());
     EXPECT_EQ(graph.getOutNeighbors(1).GetSize(), 0);
+    EXPECT_EQ(graph.getOutNeighbors(3).GetSize(), 0);
 }
 
-TEST(DirectedGraph, AddAssignedVertexAfterSize) {
+TEST(DiGraph, AddAssignedVertexAfterSize) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
     graph.addVertex(adjacencyList.GetSize() + 10);
@@ -345,21 +368,19 @@ TEST(DirectedGraph, AddAssignedVertexAfterSize) {
     EXPECT_THROW(graph.getOutNeighbors(adjacencyList.GetSize() + 11), out_of_range);
 }
 
-TEST(DirectedGraph, AddAssignedVertexExcepts) {
+TEST(DiGraph, AddAssignedVertexExcepts) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
-    
+    DiGraph graph(adjacencyList);
+
     // Act
-    EXPECT_THROW(graph.addVertex(1), invalid_argument);
-    EXPECT_THROW(graph.addVertex(0), invalid_argument);
     EXPECT_THROW(graph.addVertex(-1), out_of_range);
 }
 
-TEST(DirectedGraph, AddVertexWithNeighbors) {
+TEST(DiGraph, AddVertexWithNeighbors) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
     ListSequence<int> neighbors;
     neighbors.PushBack(1);
     neighbors.PushBack(2);
@@ -376,10 +397,10 @@ TEST(DirectedGraph, AddVertexWithNeighbors) {
     }
 }
 
-TEST(DirectedGraph, AddVertexWithAssignedNeighbors) {
+TEST(DiGraph, AddVertexWithAssignedNeighbors) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
     ListSequence<int> neighbors;
     neighbors.PushBack(1);
     neighbors.PushBack(2);
@@ -387,6 +408,7 @@ TEST(DirectedGraph, AddVertexWithAssignedNeighbors) {
 
     // Act
     graph.addVertex(adjacencyList.GetSize() + 10, neighbors);
+    graph.addVertex(1, neighbors);
 
     // Assert
     EXPECT_EQ(graph.getVertexCount(), adjacencyList.GetSize() + 1);
@@ -396,39 +418,43 @@ TEST(DirectedGraph, AddVertexWithAssignedNeighbors) {
     }
     EXPECT_THROW(graph.getOutNeighbors(adjacencyList.GetSize() + 1), invalid_argument);
     EXPECT_THROW(graph.getOutNeighbors(adjacencyList.GetSize() + 11), out_of_range);
+    EXPECT_EQ(graph.getOutNeighbors(1).GetSize(), 3); 
+    for (int i = 0; i < neighbors.GetSize(); ++i) {
+        EXPECT_EQ(graph.getOutNeighbors(1)[i], neighbors[i]);
+    }
 }
 
-TEST(DirectedGraph, AddVertexWithNeighborsExcepts) {
+TEST(DiGraph, AddVertexWithNeighborsExcepts) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
     ListSequence<int> neighbors;
     neighbors.PushBack(1);
     neighbors.PushBack(2);
     neighbors.PushBack(3);
 
     // Act
-    EXPECT_THROW(graph.addVertex(1, neighbors), invalid_argument);
-    EXPECT_THROW(graph.addVertex(0, neighbors), invalid_argument);
     EXPECT_THROW(graph.addVertex(-1, neighbors), out_of_range);
 }
 
-TEST(DirectedGraph, AddEdge) {
+TEST(DiGraph, AddEdge) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
     graph.addEdge(1, 3);
+    graph.addEdge(1, 0);
 
     // Assert
     EXPECT_TRUE(graph.hasEdge(1, 3));
+    EXPECT_TRUE(graph.hasEdge(1, 0));
 }
 
-TEST(DirectedGraph, AddEdgeExcepts) {
+TEST(DiGraph, AddEdgeExcepts) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
 
@@ -438,10 +464,10 @@ TEST(DirectedGraph, AddEdgeExcepts) {
     EXPECT_THROW(graph.addEdge(4, 4), out_of_range);
 }
 
-TEST(DirectedGraph, RemoveVertex) {
+TEST(DiGraph, RemoveVertex) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
     graph.removeVertex(0);
@@ -451,10 +477,10 @@ TEST(DirectedGraph, RemoveVertex) {
     EXPECT_TRUE(graph.isTombstone(0));
 }
 
-TEST(DirectedGraph, RemoveLastVertex) {
+TEST(DiGraph, RemoveLastVertex) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
     graph.removeVertex(adjacencyList.GetSize() - 1);
@@ -464,10 +490,10 @@ TEST(DirectedGraph, RemoveLastVertex) {
     EXPECT_TRUE(graph.isTombstone(adjacencyList.GetSize() - 1));
 }
 
-TEST(DirectedGraph, RemoveVertexExcepts) {
+TEST(DiGraph, RemoveVertexExcepts) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
     graph.removeVertex(1);
@@ -477,23 +503,133 @@ TEST(DirectedGraph, RemoveVertexExcepts) {
     EXPECT_THROW(graph.removeVertex(4), out_of_range);
 }
 
-TEST(DirectedGraph, RemoveEdge) {
+TEST(DiGraph, RemoveEdge) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
+    graph.removeEdge(1, 0);
     graph.removeEdge(1, 0);
 
     // Assert
     EXPECT_FALSE(graph.hasEdge(1, 0));
 }
 
-
-TEST(DirectedGraph, GetVertexInDegree) {
+TEST(DiGraph, RemoveEdgeExcepts) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
+
+    // Act
+
+    // Assert
+    EXPECT_THROW(graph.removeEdge(0, 4), out_of_range);
+    EXPECT_THROW(graph.removeEdge(4, 0), out_of_range);
+    EXPECT_THROW(graph.removeEdge(4, 4), out_of_range);
+}
+
+TEST(DiGraph, HasVertex) {
+    // Arrange
+    auto adjacencyList = getAdjacencyList();
+    DiGraph graph(adjacencyList);
+
+    // Act
+
+    // Assert
+    EXPECT_TRUE(graph.hasVertex(0));
+    EXPECT_TRUE(graph.hasVertex(1));
+    EXPECT_TRUE(graph.hasVertex(2));
+    EXPECT_TRUE(graph.hasVertex(3));
+    EXPECT_FALSE(graph.hasVertex(4));
+    EXPECT_FALSE(graph.hasVertex(-1));
+    EXPECT_FALSE(graph.hasVertex(5));
+}
+
+TEST(DiGraph, HasEdge) {
+    // Arrange
+    auto adjacencyList = getAdjacencyList();
+    DiGraph graph(adjacencyList);
+
+    // Act
+
+    // Assert
+    EXPECT_TRUE(graph.hasEdge(0, 1));
+    EXPECT_TRUE(graph.hasEdge(0, 2));
+    EXPECT_TRUE(graph.hasEdge(0, 3));
+    EXPECT_TRUE(graph.hasEdge(1, 0));
+    EXPECT_FALSE(graph.hasEdge(1, 2));
+    EXPECT_FALSE(graph.hasEdge(1, 3));
+    EXPECT_TRUE(graph.hasEdge(2, 0));
+    EXPECT_TRUE(graph.hasEdge(2, 1));
+    EXPECT_TRUE(graph.hasEdge(2, 3));
+    EXPECT_FALSE(graph.hasEdge(0, 0));
+    EXPECT_FALSE(graph.hasEdge(1, 1));
+    EXPECT_FALSE(graph.hasEdge(2, 2));
+    EXPECT_FALSE(graph.hasEdge(3, 3));
+    EXPECT_FALSE(graph.hasEdge(0, 4));
+    EXPECT_FALSE(graph.hasEdge(4, 0));
+    EXPECT_FALSE(graph.hasEdge(4, 4));
+    EXPECT_FALSE(graph.hasEdge(-1, 0));
+    EXPECT_FALSE(graph.hasEdge(0, -1));
+    EXPECT_FALSE(graph.hasEdge(-1, -1));
+    EXPECT_FALSE(graph.hasEdge(5, 0));
+    EXPECT_FALSE(graph.hasEdge(0, 5));
+    EXPECT_FALSE(graph.hasEdge(5, 5));
+}
+
+TEST(DiGraph, IsTombstone) {
+    // Arrange
+    auto adjacencyList = getAdjacencyList();
+    DiGraph graph(adjacencyList);
+    graph.removeVertex(0);
+    graph.removeVertex(2);
+
+    // Act
+
+    // Assert
+    EXPECT_TRUE(graph.isTombstone(0));
+    EXPECT_FALSE(graph.isTombstone(1));
+    EXPECT_TRUE(graph.isTombstone(2));
+    EXPECT_FALSE(graph.isTombstone(3));
+    EXPECT_TRUE(graph.isTombstone(4));
+    EXPECT_TRUE(graph.isTombstone(-1));
+    EXPECT_TRUE(graph.isTombstone(5));
+}
+
+TEST(DiGraph, IsEmpty) {
+    // Arrange
+    auto adjacencyList = getAdjacencyList();
+    DiGraph graph(adjacencyList);
+    DiGraph graphEmpty;
+
+    // Act
+
+    // Assert
+    EXPECT_FALSE(graph.isEmpty());
+    EXPECT_TRUE(graphEmpty.isEmpty());
+}
+
+TEST(DiGraph, boolOperators) {
+    // Arrange
+    auto adjacencyList = getAdjacencyList();
+    DiGraph graph(adjacencyList);
+    DiGraph graphCopy(graph);
+    DiGraph graphEmpty;
+
+    // Act
+
+    // Assert
+    EXPECT_TRUE(graph == graphCopy);
+    EXPECT_FALSE(graph != graphCopy);
+    EXPECT_FALSE(graph == graphEmpty);
+    EXPECT_TRUE(graph != graphEmpty);
+}
+
+TEST(DiGraph, GetVertexInDegree) {
+    // Arrange
+    auto adjacencyList = getAdjacencyList();
+    DiGraph graph(adjacencyList);
 
     // Act
 
@@ -504,10 +640,10 @@ TEST(DirectedGraph, GetVertexInDegree) {
     EXPECT_EQ(graph.getInDegree(3), 2);
 }
 
-TEST(DirectedGraph, GetVertexOutDegree) {
+TEST(DiGraph, GetVertexOutDegree) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
 
     // Act
 
@@ -517,20 +653,55 @@ TEST(DirectedGraph, GetVertexOutDegree) {
     }
 }
 
-TEST(DirectedGraph, HasVertex) {
+TEST(DiGraph, GetVertexInNeighbors) {
     // Arrange
     auto adjacencyList = getAdjacencyList();
-    DirectedGraph graph(adjacencyList);
+    DiGraph graph(adjacencyList);
+    ListSequence<int> neighbors;
+    neighbors.PushBack(1);
+    neighbors.PushBack(2);
 
     // Act
 
     // Assert
-    EXPECT_TRUE(graph.hasVertex(0));
-    EXPECT_TRUE(graph.hasVertex(1));
-    EXPECT_TRUE(graph.hasVertex(2));
-    EXPECT_TRUE(graph.hasVertex(3));
-    EXPECT_FALSE(graph.hasVertex(4));
+    EXPECT_EQ(graph.getInNeighbors(0).GetSize(), neighbors.GetSize());
+    for (int i = 0; i < neighbors.GetSize(); ++i) {
+        EXPECT_EQ(graph.getInNeighbors(0)[i], neighbors[i]);
+    }
 }
 
+TEST(DiGraph, GetVertexOutNeighbors) {
+    // Arrange
+    auto adjacencyList = getAdjacencyList();
+    DiGraph graph(adjacencyList);
+    ListSequence<int> neighbors;
+    neighbors.PushBack(1);
+    neighbors.PushBack(2);
+    neighbors.PushBack(3);
 
+    // Act
 
+    // Assert
+    EXPECT_EQ(graph.getOutNeighbors(0).GetSize(), neighbors.GetSize());
+    for (int i = 0; i < neighbors.GetSize(); ++i) {
+        EXPECT_EQ(graph.getOutNeighbors(0)[i], neighbors[i]);
+    }
+}
+
+TEST(DiGraph, Transpose) {
+    // Arrange
+    auto adjacencyList = getAdjacencyList();
+    DiGraph graph(adjacencyList);
+
+    // Act
+    auto graphTransposed = graph.transpose();
+
+    // Assert
+    EXPECT_EQ(graphTransposed.getVertexCount(), adjacencyList.GetSize());
+    for (int i = 0; i < adjacencyList.GetSize(); ++i) {
+        for (int j = 0; j < adjacencyList.Get(i).GetSize(); ++j) {
+            if(graph.hasEdge(i, adjacencyList[i][j]))
+                EXPECT_TRUE(graphTransposed.hasEdge(adjacencyList[i][j], i));
+        }
+    }
+}
