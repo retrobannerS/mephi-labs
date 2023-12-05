@@ -14,7 +14,14 @@ namespace sem3 {
         int timer;
 
         void DFS_(int vertex);
-        void reset();
+        ArraySequence<pair<int, int>> DFS_edges(int vertex);
+        void resetDFS();
+
+        ArraySequence<int> dist;
+        void BFS_(int vertex);
+        int doubleBFS(int vertex1, int vertex2);
+        void resetBFS();
+
     public:
         DiGraphProcessor(SharedPtr<DiGraph> graph);
         SharedPtr<DiGraph> getGraph() const;
@@ -36,5 +43,12 @@ namespace sem3 {
         ArraySequence<ArraySequence<int>> getCycles();
         ArraySequence<int> topSort();
         int DAGPathsCount(int vertex);
+
+        bool isTree();
+        ArraySequence<ArraySequence<pair<int, int>>> getSpanningTrees();
+
+        ArraySequence<int> getDist() const;
+        ArraySequence<int> BFS(int vertex);
+        int distance(int vertex1, int vertex2);
     };
 } // namespace sem3

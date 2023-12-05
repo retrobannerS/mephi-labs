@@ -284,3 +284,96 @@ TEST(DiGraphProcessor, DAGPathsCount) {
     // Assert
     EXPECT_EQ(result, 7);
 }
+
+TEST(DiGraphProcessor, isTree) {
+    // Arrange
+    auto graph = getDiGraph();
+    DiGraphProcessor g(graph);
+    SharedPtr<DiGraph> graph2 = sem3::make_shared<DiGraph>(*graph);
+    graph2->removeEdge(5, 2);
+    graph2->removeEdge(6, 0);
+    DiGraphProcessor g2(graph2);
+
+    // Act
+    auto result = g.isTree();
+    auto result2 = g2.isTree();
+
+    // Assert
+    EXPECT_FALSE(result);
+    EXPECT_TRUE(result2);
+}
+
+TEST(DiGraphProcessor, getSpanningTrees) {
+    // Arrange
+    auto graph = getDiGraph();
+    DiGraphProcessor g(graph);
+    
+    // Act
+    auto result = g.getSpanningTrees();
+
+    // Assert
+    EXPECT_TRUE(true);
+}
+
+TEST(DiGraphProcessor, getSpanningTrees2) {
+    // Arrange
+    auto graph = getDiGraph();
+    graph->removeEdge(5, 2);
+    DiGraphProcessor g(graph);
+
+    // Act
+    auto result = g.getSpanningTrees();
+
+    // Assert
+    EXPECT_TRUE(true);
+}
+
+TEST(DiGraphProcessor, getDist) {
+    // Arrange
+    auto graph = getDiGraph();
+    DiGraphProcessor g(graph);
+
+    // Act
+    auto result = g.getDist();
+
+    // Assert
+    EXPECT_EQ(result.GetSize(), graph->getVertexCount());
+    for(int i = 0; i < result.GetSize(); ++i) {
+        EXPECT_EQ(result[i], INT_MAX);
+    }
+}
+
+TEST(DiGraphProcessor, BFS) {
+    // Arrange
+    auto graph = getDiGraph();
+    DiGraphProcessor g(graph);
+    vector<int> expected = {0, 1, 5, 2, 3, 4, 2};
+
+    // Act
+    auto result = g.BFS(0);
+
+    // Assert
+    EXPECT_EQ(result.GetSize(), expected.size());
+    for (int i = 0; i < result.GetSize(); ++i) {
+        EXPECT_EQ(result[i], expected[i]);
+    }
+}
+
+TEST(DiGraphProcessor, distance) {
+    // Arrange
+    auto graph = getDiGraph();
+    DiGraphProcessor g(graph);
+    graph->addVertex();
+
+    // Act
+    auto result = g.distance(0, 5);
+    auto result2 = g.distance(0, 6);
+    auto result3 = g.distance(0, 0);
+    auto result4 = g.distance(0, 7);
+
+    // Assert
+    EXPECT_EQ(result, 3);
+    EXPECT_EQ(result2, 1);
+    EXPECT_EQ(result3, 0);
+    EXPECT_EQ(result4, INT_MAX);
+}
