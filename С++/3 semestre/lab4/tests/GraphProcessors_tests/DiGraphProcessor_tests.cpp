@@ -5,14 +5,7 @@ using namespace sem3;
 using namespace lab2;
 
 SharedPtr<DiGraph> getDiGraph() {
-    vector<vector<int>> v =
-    { {1},
-      {3, 6},
-      {1, 3},
-      {4},
-      {5},
-      {2},
-      {0} };
+    vector<vector<int>> v = {{1}, {3, 6}, {1, 3}, {4}, {5}, {2}, {0}};
 
     ArraySequence<ListSequence<int>> abjList;
     for (int i = 0; i < v.size(); ++i) {
@@ -79,7 +72,7 @@ TEST(DiGraphProcessor, DFS) {
     // Assert
     EXPECT_EQ(tin.GetSize(), tin_expected.size());
     EXPECT_EQ(tout.GetSize(), tout_expected.size());
-    for(int i = 0; i < tin.GetSize(); ++i) {
+    for (int i = 0; i < tin.GetSize(); ++i) {
         EXPECT_EQ(tin[i], tin_expected[i]);
         EXPECT_EQ(tout[i], tout_expected[i]);
     }
@@ -101,7 +94,7 @@ TEST(DiGraphProcessor, DFS_all) {
     // Assert
     EXPECT_EQ(tin.GetSize(), tin_expected.size());
     EXPECT_EQ(tout.GetSize(), tout_expected.size());
-    for(int i = 0; i < tin.GetSize(); ++i) {
+    for (int i = 0; i < tin.GetSize(); ++i) {
         EXPECT_EQ(tin[i], tin_expected[i]);
         EXPECT_EQ(tout[i], tout_expected[i]);
     }
@@ -118,7 +111,7 @@ TEST(DiGraphProcessor, AchievableFrom) {
 
     // Assert
     EXPECT_EQ(result.GetSize(), expected.size());
-    for(int i = 0; i < result.GetSize(); ++i) {
+    for (int i = 0; i < result.GetSize(); ++i) {
         EXPECT_EQ(result[i], expected[i]);
     }
 }
@@ -136,7 +129,7 @@ TEST(DiGraphProcessor, AchievableFrom2) {
 
     // Assert
     EXPECT_EQ(result.GetSize(), expected.size());
-    for(int i = 0; i < result.GetSize(); ++i) {
+    for (int i = 0; i < result.GetSize(); ++i) {
         EXPECT_EQ(result[i], expected[i]);
     }
     EXPECT_EQ(result2.GetSize(), 1);
@@ -155,7 +148,6 @@ TEST(DiGraphProcessor, isStronglyConnected) {
     auto result = g.isStronglyConnected();
     auto result2 = g2.isStronglyConnected();
 
-
     // Assert
     EXPECT_TRUE(result);
     EXPECT_FALSE(result2);
@@ -165,16 +157,16 @@ TEST(DiGraphProcessor, getStronglyConnectedComponents) {
     // Arrange
     auto graph = getDiGraph();
     DiGraphProcessor g(graph);
-    vector<vector<int>> expected = { {0, 1, 2, 3, 4, 5, 6} };
+    vector<vector<int>> expected = {{0, 1, 2, 3, 4, 5, 6}};
 
     // Act
     auto result = g.getStronglyConnectedComponents();
 
     // Assert
     EXPECT_EQ(result.GetSize(), expected.size());
-    for(int i = 0; i < result.GetSize(); ++i) {
+    for (int i = 0; i < result.GetSize(); ++i) {
         EXPECT_EQ(result[i].GetSize(), expected[i].size());
-        for(int j = 0; j < result[i].GetSize(); ++j) {
+        for (int j = 0; j < result[i].GetSize(); ++j) {
             EXPECT_EQ(result[i][j], expected[i][j]);
         }
     }
@@ -307,7 +299,7 @@ TEST(DiGraphProcessor, getSpanningTrees) {
     // Arrange
     auto graph = getDiGraph();
     DiGraphProcessor g(graph);
-    
+
     // Act
     auto result = g.getSpanningTrees();
 
@@ -338,7 +330,7 @@ TEST(DiGraphProcessor, getDist) {
 
     // Assert
     EXPECT_EQ(result.GetSize(), graph->getVertexCount());
-    for(int i = 0; i < result.GetSize(); ++i) {
+    for (int i = 0; i < result.GetSize(); ++i) {
         EXPECT_EQ(result[i], INT_MAX);
     }
 }

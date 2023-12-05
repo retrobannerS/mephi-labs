@@ -269,7 +269,7 @@ TEST(GraphProcessor, getDist) {
 
     // Assert
     EXPECT_EQ(result[0], 0);
-    for(int i = 1; i < graph->getVertexCount(); ++i) {
+    for (int i = 1; i < graph->getVertexCount(); ++i) {
         EXPECT_EQ(result[i], INT_MAX);
     }
 }
@@ -300,8 +300,8 @@ TEST(GraphProcessor, distance) {
     auto result = graphProcessor.distance(0, 8);
     auto result2 = graphProcessor.distance(0, 5);
     auto result3 = graphProcessor.distance(0, 0);
-    auto result4 = graphProcessor.distance(0, 1); 
-    auto result5 = graphProcessor.distance(0, 9);  
+    auto result4 = graphProcessor.distance(0, 1);
+    auto result5 = graphProcessor.distance(0, 9);
 
     // Assert
     EXPECT_EQ(result, 1);

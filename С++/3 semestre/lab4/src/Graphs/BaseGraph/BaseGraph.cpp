@@ -7,7 +7,7 @@ namespace sem3 {
         }
         return graph.Get(vertex).GetSize() == 1 && graph.Get(vertex).Get(0) == -1;
     }
-    
+
     void BaseGraph::makeTombstone(int vertex) noexcept {
         if (isTombstone(vertex)) {
             return;

@@ -100,10 +100,9 @@ TEST(DiGraph, ConstructorFromEdges2) {
     EXPECT_EQ(graph.getVertexCount(), 2);
     EXPECT_EQ(graph.getEdgeCount(), 1);
     EXPECT_TRUE(graph.hasEdge(0, 4));
-    for(int i = 1; i < 4; ++i){
+    for (int i = 1; i < 4; ++i) {
         EXPECT_TRUE(graph.isTombstone(1));
     }
-
 }
 
 TEST(DiGraph, CopyConstructor) {
@@ -418,7 +417,7 @@ TEST(DiGraph, AddVertexWithAssignedNeighbors) {
     }
     EXPECT_THROW(graph.getOutNeighbors(adjacencyList.GetSize() + 1), invalid_argument);
     EXPECT_THROW(graph.getOutNeighbors(adjacencyList.GetSize() + 11), out_of_range);
-    EXPECT_EQ(graph.getOutNeighbors(1).GetSize(), 3); 
+    EXPECT_EQ(graph.getOutNeighbors(1).GetSize(), 3);
     for (int i = 0; i < neighbors.GetSize(); ++i) {
         EXPECT_EQ(graph.getOutNeighbors(1)[i], neighbors[i]);
     }
@@ -700,7 +699,7 @@ TEST(DiGraph, Transpose) {
     EXPECT_EQ(graphTransposed.getVertexCount(), adjacencyList.GetSize());
     for (int i = 0; i < adjacencyList.GetSize(); ++i) {
         for (int j = 0; j < adjacencyList.Get(i).GetSize(); ++j) {
-            if(graph.hasEdge(i, adjacencyList[i][j]))
+            if (graph.hasEdge(i, adjacencyList[i][j]))
                 EXPECT_TRUE(graphTransposed.hasEdge(adjacencyList[i][j], i));
         }
     }

@@ -37,7 +37,7 @@ namespace sem3 {
     }
 
     Graph::Graph(const ArraySequence<pair<int, int>> &edges) noexcept {
-        for(int i = 0; i < edges.GetSize(); ++i){
+        for (int i = 0; i < edges.GetSize(); ++i) {
             addVertex(edges.Get(i).first);
             addVertex(edges.Get(i).second);
             addEdge(edges.Get(i).first, edges.Get(i).second);
@@ -46,9 +46,9 @@ namespace sem3 {
 
     Graph::Graph(const Graph &other) noexcept { graph = other.graph; }
 
-    Graph::Graph(Graph &&other) noexcept { 
+    Graph::Graph(Graph &&other) noexcept {
         graph = other.graph;
-        other.graph = ArraySequence<ListSequence<int>>(); 
+        other.graph = ArraySequence<ListSequence<int>>();
     }
 
     Graph &Graph::operator=(const Graph &other) noexcept {
@@ -71,7 +71,7 @@ namespace sem3 {
     int Graph::getEdgeCount() const noexcept {
         int result = 0;
         for (int i = 0; i < graph.GetSize(); ++i) {
-            if(!isTombstone(i))
+            if (!isTombstone(i))
                 result += graph.Get(i).GetSize();
         }
         return result / 2;
@@ -80,7 +80,7 @@ namespace sem3 {
     ArraySequence<pair<int, int>> Graph::getEdges() const noexcept {
         ArraySequence<pair<int, int>> result;
         for (int i = 0; i < graph.GetSize(); ++i) {
-            if(!isTombstone(i))
+            if (!isTombstone(i))
                 for (int j = 0; j < graph.Get(i).GetSize(); ++j) {
                     if (graph.Get(i).Get(j) > i) {
                         result.PushBack(make_pair(i, graph.Get(i).Get(j)));
@@ -99,7 +99,8 @@ namespace sem3 {
             return;
         } else {
             graph[from].PushBack(to);
-            if(from != to) graph[to].PushBack(from);
+            if (from != to)
+                graph[to].PushBack(from);
         }
     }
 

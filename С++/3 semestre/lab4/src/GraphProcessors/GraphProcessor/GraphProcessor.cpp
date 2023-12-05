@@ -1,6 +1,7 @@
 #include "GraphProcessor.hpp"
 #include "Collections/Queue.hpp"
 #include "Collections/Stack.hpp"
+#include <climits>
 
 namespace sem3 {
     void GraphProcessor::DFS_(int vertex) {

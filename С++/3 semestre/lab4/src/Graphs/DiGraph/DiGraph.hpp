@@ -12,6 +12,7 @@ namespace sem3 {
     class DiGraph : public BaseGraph {
     private:
         using BaseGraph::graph;
+
     public:
         DiGraph() noexcept;
         DiGraph(const ArraySequence<ListSequence<int>> &adjacencyList) noexcept;

@@ -3,6 +3,7 @@
 #include "Collections/Stack.hpp"
 #include "QuickSorter.hpp"
 #include "SmartArraySequence.hpp"
+#include <climits>
 
 namespace sem3 {
     void DiGraphProcessor::resetDFS() {
@@ -56,7 +57,7 @@ namespace sem3 {
             throw invalid_argument("Vertex is tombstone");
         }
 
-        if(vertex1 == vertex2)
+        if (vertex1 == vertex2)
             return 0;
 
         ArraySequence<int> dist1(graph->getVertexCount(), INT_MAX);
@@ -102,9 +103,7 @@ namespace sem3 {
         return INT_MAX;
     }
 
-    void DiGraphProcessor::resetBFS() {
-        dist = ArraySequence<int>(graph->getVertexCount(), INT_MAX);
-    }
+    void DiGraphProcessor::resetBFS() { dist = ArraySequence<int>(graph->getVertexCount(), INT_MAX); }
 
     void DiGraphProcessor::DFS_(int vertex) {
         if (vertex < 0 or vertex >= graph->getVertexCount()) {

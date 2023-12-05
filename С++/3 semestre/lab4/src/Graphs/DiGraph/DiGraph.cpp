@@ -157,7 +157,7 @@ namespace sem3 {
         return result;
     }
 
-    DiGraph DiGraph::transpose() const noexcept { 
+    DiGraph DiGraph::transpose() const noexcept {
         ArraySequence<ListSequence<int>> result;
         for (int i = 0; i < graph.GetSize(); ++i) {
             result.PushBack(ListSequence<int>());
